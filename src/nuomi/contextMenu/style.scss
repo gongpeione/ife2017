@@ -1,0 +1,20 @@
+.contentMenu {
+    width: 100%;
+    height: 200px;
+    background: #eee;
+    border-radius: 3px;
+    position: absolute;
+    top: 50%;
+    margin: -100px 0 0 0;
+    // transform: translate(-50%, -50%);
+
+    &::before {
+        content: '这里是右键菜单区域';
+        font-size: 20px;
+        color: #999;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}

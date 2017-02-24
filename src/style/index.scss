@@ -1,0 +1,61 @@
+@import './normalize.css';
+@import './entries.scss';
+@import './var.scss';
+
+$fontSize: .4rem;
+
+body, 
+html {
+    height: 100%;
+}
+html {
+    font-size: 100px;
+}
+body {
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    font-size: .14rem;
+    font-weight: 300;
+    line-height: 1.5;
+    color: $dark;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+}
+h1,
+.h1 {
+    font-size: $fontSize;
+}
+h2,
+.h2 {
+    font-size: $fontSize - .5;
+}
+h3,
+.h3 {
+    font-size: $fontSize - 1;
+}
+h4,
+.h4 {
+    font-size: $fontSize - 1.5;
+}
+h5,
+.h5 {
+    font-size: $fontSize - 2;
+}
+h6,
+.h6 {
+    font-size: $fontSize - 2.5;
+}
+p,
+.p {
+    font-size: .16rem;
+    margin-bottom: .16rem;
+}
+
+.container {
+    display: inline-block;
+    width: calc(100% - 260px);
+    height: 100%;
+    float: left;
+    // background: #eee;
+    position: relative;
+}
