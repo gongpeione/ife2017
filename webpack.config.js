@@ -4,9 +4,11 @@ const autoprefixer = require('autoprefixer');
 const precss = require('precss');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const copy = require('copy-webpack-plugin');
 
 const srcDir = path.resolve(__dirname, './src');
-const distDir = path.resolve(__dirname, './dist');
+const distDir = path.resolve(__dirname, './docs');
+const staticDir = path.resolve(__dirname, './static');
 
 const commonsPlugin = new webpack.optimize.CommonsChunkPlugin({
     name: 'commons',
@@ -35,31 +37,32 @@ const postcss = new webpack.LoaderOptionsPlugin({
             ];
         },
     }
-})
+});
+const copyStatic = new copy([
+    {
+        from: './static',
+        to: './static'
+    }
+]);
 
 module.exports = {
     entry: {
         'src': srcDir,
-        // 'bacic': path.resolve(srcDir, './basic')
     },
     output: {
         path: distDir,
         publicPath: '',
         filename: 'index.js',
-        // chunckFileName: '[id].bundle.js'
     },
     module: {
-        // preLoaders: [
-        //     {
-        //         test: /\.js$/,
-        //         loaders: ['eslint'],
-        //         exclude: /node_modules/
-        //     }
-        // ],
         loaders: [
             {
                 test: /template\.html$/,
                 use: ['html-loader']
+            },
+            {
+                test: /\.jpe?g$|\.gif$|\.png$|\.svg$|\.woff$|\.ttf$|\.wav$|\.mp3$/,
+                use: ['file-loader']
             },
             {
                 test: /\.js$/,
@@ -72,11 +75,10 @@ module.exports = {
                     fallback: "style-loader",
                     use: ["css-loader?minimize", 'sass-loader']
                 })
-                // loader: extract.extract('sass-loader!postcss!css-loader?minimize')
             }
         ]
     },
-    plugins: [ commonsPlugin, extract, htmlPlugin, postcss ],
+    plugins: [ commonsPlugin, extract, htmlPlugin, postcss, copyStatic ],
     // watch: true,
 
     devServer: {
