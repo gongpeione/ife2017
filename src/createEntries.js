@@ -5,7 +5,7 @@ import { g } from './gtool';
 
 const entries = [
     {
-        title: '百度糯米前端技术学院',
+        title: '糯米学院',
         tasks: [
             {
                 title: '自定义网页右键菜单',
@@ -15,17 +15,6 @@ const entries = [
         ]
     }
 ];
-
-const Handler = {
-    contextMenu (e) {
-        console.log('contextMenuHandler');
-        require.ensure([], function(require){
-            const contextMenuFunc = require('./nuomi/contextMenu').createMenu;
-            // console.log(contextMenuFunc.default);
-            contextMenuFunc('.container');
-        });
-    }
-}
 
 export default function createEntries (parent) {
     parent = typeof parent === 'string' ? g.$(parent) : parent;
@@ -40,7 +29,10 @@ export default function createEntries (parent) {
         topLevel.tasks.forEach(task => {
             const taskList = new g.vdom('li', {}, [ task.title ]);
             
-            taskList.addEvent('click', Handler[task.name]);
+            taskList.addEvent('click', e => {
+                location.hash = '!/' + task.name;
+                // Handler[task.name](e);
+            });
 
             topLevelList.push(taskList);
         });
