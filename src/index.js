@@ -3,9 +3,7 @@ import createEntries from './createEntries';
 import Router from './Router';
 
 import './style/index.scss';
-
-// const $ = g.$;
-// const $$ = g.$$;
+import taskList from './taskList.json';
 
 createEntries('.entries nav');
 
@@ -14,13 +12,19 @@ const Handler = {
         // console.log('contextMenuHandler');
         console.log(parame);
         require.ensure([], function(require){
-            const contextMenuFunc = require('./nuomi/contextMenu').createMenu;
-            // console.log(contextMenuFunc.default);
-            contextMenuFunc('.container');
+            require('./nuomi/contextMenu').createMenu('.container');
         });
     }
 }
-new Router([
+
+const githubLinks = {};
+taskList.forEach(collage => {
+    collage.tasks.forEach(task => {
+        githubLinks[task.name] = task.github;
+    })
+});
+// console.log(githubLinks);
+const router = new Router([
     {
         path: '/',
         handler: (parame) => {
@@ -31,5 +35,18 @@ new Router([
     {
         path: '/contextMenu',
         handler: Handler.contextMenu
+    },
+    {
+        path: '/phantomjs1',
+        handler: () => {
+            g.$('.container').innerHTML = '<div class="nopage"></div>';
+        }
     }
 ]);
+
+router.beforeEach((from, to, next) => {
+    // console.log('before', from, to);
+    console.log(g.$('.github a'), githubLinks[to.path.replace('/', '')]);
+    g.$('.github a').href = githubLinks[to.path.replace('/', '')];
+    next();
+});

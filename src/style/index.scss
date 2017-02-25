@@ -59,3 +59,32 @@ p,
     // background: #eee;
     position: relative;
 }
+
+.github {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: scale(1.8);
+    transform-origin: right top;
+}
+
+.nopage {
+    width: 80%;
+    height: 40%;
+    border-radius: .03rem;
+    background: #eee;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    &::before {
+        content: '本题无展示页，请点击右上方 Github 图标查看源代码。';
+        color: #999;
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        text-align: center;
+        transform: translateY(-50%);
+        font-size: .2rem;
+    }
+}

@@ -1,20 +1,11 @@
 import { g } from './gtool';
 
+import taskList from './taskList.json';
+
 // const $ = g.$;
 // const $$ = g.$$;
-
-const entries = [
-    {
-        title: '糯米学院',
-        tasks: [
-            {
-                title: '自定义网页右键菜单',
-                name: 'contextMenu',
-                completed: false
-            }
-        ]
-    }
-];
+// console.log(taskList);
+const entries = taskList;
 
 export default function createEntries (parent) {
     parent = typeof parent === 'string' ? g.$(parent) : parent;

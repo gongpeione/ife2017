@@ -1,0 +1,19 @@
+[
+    {
+        "title": "糯米学院",
+        "tasks": [
+            {
+                "title": "自定义网页右键菜单",
+                "name": "contextMenu",
+                "completed": false,
+                "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/contextMenu"
+            },
+            {
+                "title": "网页抓取分析服务系列之一（基础分析）",
+                "name": "phantomjs1",
+                "completed": false,
+                "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/phantomjs"
+            }
+        ]
+    }
+]

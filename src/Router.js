@@ -15,6 +15,8 @@ export default class Router {
         };
         this.history = [];
         this.historyAnchor = -1;
+
+        this.beforeEachFuncs = null;
         
         this.origin = location.origin;
 
@@ -27,6 +29,10 @@ export default class Router {
             }
         });
 
+        this.firstPage();
+    }
+
+    firstPage () {
         if (location.hash !== '') {
             this.hashName = location.hash.replace('#!', '');
         } else {
@@ -36,6 +42,8 @@ export default class Router {
         window.addEventListener("hashchange", () => {
              this.hashName = location.hash.replace('#!', '');
         });
+
+        // this.hashChange({ from: this.from, to: this.to });
     }
 
     get hashName () {
@@ -65,10 +73,19 @@ export default class Router {
             this.routes.forEach(route => {
                 // console.log(this.hashName, route.path)
                 if (this.hashName === route.path) {
-                    route.handler(parame);
+                    if (this.beforeEachFuncs) {
+                        this.beforeEachFuncs(this.from, this.to, route.handler.bind(null, parame));
+                    } else {
+                        route.handler(parame);
+                    }
                 }
             });
         }   
+    }
+
+    beforeEach (func) {
+        this.beforeEachFuncs = func;
+        this.beforeEachFuncs(this.from, this.to, () => {});
     }
 
     back () {
