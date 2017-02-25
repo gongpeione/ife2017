@@ -32,7 +32,7 @@ export default class ContextMenu {
             }
         });
         document.addEventListener('contextmenu', e => {
-            console.log(e);
+            // console.log(e);
             if (e.target !== this.menu && e.target !== this.parent) {
                 this.hide();
             }
