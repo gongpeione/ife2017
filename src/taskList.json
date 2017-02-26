@@ -5,14 +5,25 @@
             {
                 "title": "自定义网页右键菜单",
                 "name": "contextMenu",
-                "completed": false,
+                "completed": true,
                 "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/contextMenu"
             },
             {
                 "title": "网页抓取分析服务系列之一（基础分析）",
                 "name": "phantomjs1",
-                "completed": false,
+                "completed": true,
                 "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/phantomjs"
+            }
+        ]
+    },
+    {
+        "title": "ECharts & WebVR学院",
+        "tasks": [
+            {
+                "title": "WebGL No.1 - Three.js 入门",
+                "name": "threejs1",
+                "completed": false,
+                "github": ""
             }
         ]
     }

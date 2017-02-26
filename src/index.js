@@ -12,7 +12,14 @@ const Handler = {
         // console.log('contextMenuHandler');
         console.log(parame);
         require.ensure([], function(require){
-            require('./nuomi/contextMenu').createMenu('.container');
+            require('./nuomi/contextMenu').create('.container');
+        });
+    },
+    threejs1 (parame) {
+        // console.log('contextMenuHandler');
+        console.log(parame);
+        require.ensure([], function(require){
+            require('./echarts/threejs1').create('.container');
         });
     }
 }
@@ -41,6 +48,10 @@ const router = new Router([
         handler: () => {
             g.$('.container').innerHTML = '<div class="nopage"></div>';
         }
+    },
+    {
+        path: '/threejs1',
+        handler: Handler.threejs1
     }
 ]);
 

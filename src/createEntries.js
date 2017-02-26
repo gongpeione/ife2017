@@ -2,9 +2,6 @@ import { g } from './gtool';
 
 import taskList from './taskList.json';
 
-// const $ = g.$;
-// const $$ = g.$$;
-// console.log(taskList);
 const entries = taskList;
 
 export default function createEntries (parent) {

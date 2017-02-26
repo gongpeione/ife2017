@@ -3,7 +3,7 @@ import template from './template.html';
 import ContextMenu from './ContextMenu';
 import './style.scss';
 
-export function createMenu (parent, option = []) {
+export function create (parent, option = []) {
     parent = typeof parent === 'string' ? g.$(parent) : parent;
 
     // console.log(html);
