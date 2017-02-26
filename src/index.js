@@ -9,6 +9,8 @@ import taskList from './taskList.json';
 
 createEntries('.entries nav');
 
+const oldConsole = console.log;
+
 const loadingEle = g.$('.loading');
 const loading = {
     hide (func = () => {}) {
@@ -44,6 +46,13 @@ const Handler = {
             require('./nuomi/hoverEffect').create('.container');
             loading.hide();
         });
+    },
+    vue1 (parame) {
+        loading.show();
+        require.ensure(['./nuomi/vue1'], function(require){
+            require('./nuomi/vue1').create('.container');
+            loading.hide();
+        });
     }
 }
 
@@ -75,16 +84,20 @@ const router = new Router([
     {
         path: '/threejs1',
         handler: Handler.threejs1
-    }
-    ,
+    },
     {
         path: '/hoverEffect',
         handler: Handler.hoverEffect
+    },
+    {
+        path: '/vue1',
+        handler: Handler.vue1
     }
 ]);
 
 router.beforeEach((from, to, next) => {
     g.$('.container').innerHTML = '';
+    console.log = oldConsole;
     console.log('before1');
     next();
 });
