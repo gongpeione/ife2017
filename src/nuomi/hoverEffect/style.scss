@@ -1,0 +1,167 @@
+.hoverEffect {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    
+
+    img {
+        width: 600px;
+        height: auto;
+        display: block;
+        transition: filter .1s ease-in-out;
+    }
+
+    figcaption {
+        // background: rgba(0,0,0,.5);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .content {
+        height: calc(100% - 100px);
+        width: calc(100% - 100px);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        border: 50px solid rgba(0,0,0,.2);
+        background-clip: padding-box;
+        transition: opacity .2s ease-in-out;
+        opacity: 0;
+        background: rgba(4, 28, 47, 0.8);
+
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            transform: scaleX(0);
+            background: #fff;
+            transition: transform .4s ease-in-out;
+            transition-delay: .1s;
+            will-change: transform;
+        }
+        &::before {
+            top: 0;
+        }
+        &::after {
+            bottom: 0;
+        }
+
+        &:hover::before,
+        &:hover::after {
+            transform: scaleX(1);
+        }
+
+        &:hover header {
+            &::before,
+            &::after {
+                transform: scaleY(1);
+            }
+        }
+    
+    }
+    .cover {
+        display: table-cell;
+        vertical-align: middle;
+    }
+    header {
+        text-align: center;
+        transition: transform .2s ease-in-out;
+        // margin-top: 10%;
+        transform: translate3d(0, -10%, 0);
+        color: #fff;
+        position: static;
+        height: 100%;
+        top: 0;
+        position: absolute;
+        width: 100%;
+        display: table;
+
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            transform: scaleY(0);
+            background: #fff;
+            transition: transform .4s ease-in-out;
+            transition-delay: .1s;
+        }
+        &::before {
+            left: 0;
+        }
+        &::after {
+            right: 0;
+        }
+    }
+    h1 {
+        margin: 10px;
+        background-image: linear-gradient(-90deg, #1C80FF 0%, #CF35F7 26%, #FFA33A 50%, #37F656 77%, #1C80FF 100%);
+        background-position: 0 0;
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        // text-shadow: 1px 1px 2px rgba(0,0,0,.5);
+        position: relative;
+        animation: textColor 5s infinite linear;
+        font-weight: 800;
+        font-size: .4rem;
+
+        &::after {
+            background: none;
+            content: attr(data-text);
+            left: 50%;
+            width: 100%;
+            transform: translateX(-50%);
+            position: absolute;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            top: 0;
+            z-index: -1;
+        }
+    }
+    @keyframes textColor {
+        from {
+            background-position: 0 0;
+        }
+        to {
+            background-position: -200% 0;
+        }
+    }
+    a {
+        color: #fff;
+        text-decoration: none;
+        font-size: .3rem;
+        background-image: linear-gradient(-90deg, #1C80FF 0%, #CF35F7 26%, #FFA33A 50%, #37F656 77%, #1C80FF 100%);
+        background-position: 0 0;
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        animation: textColor 1s infinite linear;
+        opacity: .6;
+    }
+    &:hover {
+        img {
+            will-change: filter;
+            filter: blur(10px);
+        }
+        .content {
+            will-change: opacity;
+            opacity: 1;
+        }
+        header {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+}

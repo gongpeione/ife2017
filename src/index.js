@@ -25,8 +25,6 @@ const loading = {
 
 const Handler = {
     contextMenu (parame) {
-        // console.log('contextMenuHandler');
-        // console.log(parame);
         loading.show();
         require.ensure(['./nuomi/contextMenu'], function(require){
             require('./nuomi/contextMenu').create('.container');
@@ -34,11 +32,16 @@ const Handler = {
         });
     },
     threejs1 (parame) {
-        // console.log('contextMenuHandler');
-        // console.log(parame);
         loading.show();
         require.ensure(['./echarts/threejs1'], function(require){
             require('./echarts/threejs1').create('.container');
+            loading.hide();
+        });
+    },
+    hoverEffect (parame) {
+        loading.show();
+        require.ensure(['./nuomi/hoverEffect'], function(require){
+            require('./nuomi/hoverEffect').create('.container');
             loading.hide();
         });
     }
@@ -73,9 +76,15 @@ const router = new Router([
         path: '/threejs1',
         handler: Handler.threejs1
     }
+    ,
+    {
+        path: '/hoverEffect',
+        handler: Handler.hoverEffect
+    }
 ]);
 
 router.beforeEach((from, to, next) => {
+    g.$('.container').innerHTML = '';
     console.log('before1');
     next();
 });

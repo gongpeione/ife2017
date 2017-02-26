@@ -51,18 +51,22 @@ module.exports = {
     },
     output: {
         path: distDir,
-        publicPath: '',
+        // publicPath: 'static',
         filename: 'index.js',
     },
     module: {
         loaders: [
             {
                 test: /template\.html$/,
-                use: ['html-loader']
+                use: ['html-loader?root=./static/']
             },
             {
-                test: /\.jpe?g$|\.gif$|\.png$|\.svg$|\.woff$|\.ttf$|\.wav$|\.mp3$/,
+                test: /\.woff$|\.ttf$|\.wav$|\.mp3$/,
                 use: ['file-loader']
+            },
+            {
+                test: /\.jpe?g$|\.gif$|\.png$|\.svg$/,
+                use: ['file-loader?limit=8192&name=static/[hash:8].[name].[ext]']
             },
             {
                 test: /\.js$/,

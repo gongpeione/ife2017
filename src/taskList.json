@@ -13,6 +13,12 @@
                 "name": "phantomjs1",
                 "completed": true,
                 "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/phantomjs"
+            },
+            {
+                "title": "有趣的鼠标悬浮模糊效果",
+                "name": "hoverEffect",
+                "completed": false,
+                "github": "https://github.com/gongpeione/ife2017/"
             }
         ]
     },
