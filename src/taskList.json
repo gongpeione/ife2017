@@ -18,13 +18,13 @@
                 "title": "有趣的鼠标悬浮模糊效果",
                 "name": "hoverEffect",
                 "completed": true,
-                "github": "https://github.com/gongpeione/ife2017/"
+                "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/hoverEffect"
             },
             {
                 "title": "动态数据绑定（一）",
                 "name": "vue1",
                 "completed": false,
-                "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/hoverEffect"
+                "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/vue1"
             }
         ]
     },
