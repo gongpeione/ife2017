@@ -1,3 +1,5 @@
+import 'babel-polyfill';
+
 import { g } from './gtool';
 import createEntries from './createEntries';
 import Router from './Router';
@@ -7,19 +9,37 @@ import taskList from './taskList.json';
 
 createEntries('.entries nav');
 
+const loadingEle = g.$('.loading');
+const loading = {
+    hide (func = () => {}) {
+        func();
+        g.class(loadingEle, 'hide');
+        g.class(loadingEle, 'show', true);
+    },
+    show (func = () => {}) {
+        func();
+        g.class(loadingEle, 'show');
+        g.class(loadingEle, 'hide', true);
+    }
+}
+
 const Handler = {
     contextMenu (parame) {
         // console.log('contextMenuHandler');
         // console.log(parame);
-        require.ensure([], function(require){
+        loading.show();
+        require.ensure(['./nuomi/contextMenu'], function(require){
             require('./nuomi/contextMenu').create('.container');
+            loading.hide();
         });
     },
     threejs1 (parame) {
         // console.log('contextMenuHandler');
         // console.log(parame);
-        require.ensure([], function(require){
+        loading.show();
+        require.ensure(['./echarts/threejs1'], function(require){
             require('./echarts/threejs1').create('.container');
+            loading.hide();
         });
     }
 }

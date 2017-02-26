@@ -88,3 +88,46 @@ p,
         font-size: .2rem;
     }
 }
+
+.loading {
+    width: .2rem;
+    height: .2rem;
+    position: fixed;
+    right: .1rem;
+    bottom: .1rem;
+    display: none;
+    &:before {
+        content: '';
+        position: absolute;
+        width: .2rem;
+        height: .2rem;
+        background-color: $green;
+        left: calc(50% - .1rem);
+        top: calc(50% - .1rem);
+        animation: loading 1s cubic-bezier(0.59, 0.02, 0.3, 1) infinite;
+        z-index: -1;
+    }
+    &.hide {
+        display: none;
+    }
+    &.show {
+        display: block;
+    }
+}
+@keyframes loading {
+    0% {
+        border-radius: 0;
+        background-color: #ccc;
+        transform: rotate(0deg);
+    }
+    50% {
+        border-radius: 50%;
+        background-color: #4eba56;
+        transform: rotate(180deg);
+    }
+    100% {
+        border-radius: 1%;
+        background-color: #ccc;
+        transform: rotate(359deg);
+    }
+}
