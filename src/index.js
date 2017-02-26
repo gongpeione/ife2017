@@ -10,14 +10,14 @@ createEntries('.entries nav');
 const Handler = {
     contextMenu (parame) {
         // console.log('contextMenuHandler');
-        console.log(parame);
+        // console.log(parame);
         require.ensure([], function(require){
             require('./nuomi/contextMenu').create('.container');
         });
     },
     threejs1 (parame) {
         // console.log('contextMenuHandler');
-        console.log(parame);
+        // console.log(parame);
         require.ensure([], function(require){
             require('./echarts/threejs1').create('.container');
         });
@@ -56,8 +56,26 @@ const router = new Router([
 ]);
 
 router.beforeEach((from, to, next) => {
-    // console.log('before', from, to);
-    console.log(g.$('.github a'), githubLinks[to.path.replace('/', '')]);
-    g.$('.github a').href = githubLinks[to.path.replace('/', '')];
+    console.log('before1');
     next();
+});
+
+router.beforeEach((from, to, next) => {
+    console.log('before2');
+    next();
+});
+
+router.beforeEach((from, to, next) => {
+    console.log('before3');
+    // console.log(g.$('.github a'), githubLinks[to.path.replace('/', '')]);
+    // g.$('.github a').href = githubLinks[to.path.replace('/', '')];
+    next();
+});
+
+router.afterEach((from, to) => {
+    console.log('after1');
+});
+
+router.afterEach((from, to) => {
+    console.log('after2');
 });

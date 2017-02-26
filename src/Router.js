@@ -16,7 +16,8 @@ export default class Router {
         this.history = [];
         this.historyAnchor = -1;
 
-        this.beforeEachFuncs = null;
+        this.beforeEachFuncs = [];
+        this.afterEachFuncs = [];
         
         this.origin = location.origin;
 
@@ -68,15 +69,38 @@ export default class Router {
 
     hashChange (parame) {
         // this.hashName = location.hash.replace('#!', '');
-        console.log(this);
+        // console.log(this);
         if (this.routes.length) {
             this.routes.forEach(route => {
-                // console.log(this.hashName, route.path)
+
                 if (this.hashName === route.path) {
-                    if (this.beforeEachFuncs) {
-                        this.beforeEachFuncs(this.from, this.to, route.handler.bind(null, parame));
+                    // Excute beforeEach functions
+                    const from = parame.from;
+                    const to = parame.to;
+                    const lastIndex = this.beforeEachFuncs.length - 1;
+                    if (this.beforeEachFuncs.length) {
+
+                        // beforeEach functions chain
+                        let index = 0;
+                        const next = () => {
+                            // console.log(index);
+                            if (index < lastIndex) {
+                                this.beforeEachFuncs[++index](from, to, next);
+                            } else {
+                                route.handler({ from, to });
+                            }
+                        }
+                        this.beforeEachFuncs[0](from, to, next);
+                       
+                        
                     } else {
-                        route.handler(parame);
+                        route.handler({ from, to });
+                    }
+
+                    if (this.afterEachFuncs.length) {
+                        for (let i = 0; i < this.afterEachFuncs.length; i++) {
+                            this.afterEachFuncs[i]();
+                        }  
                     }
                 }
             });
@@ -84,8 +108,13 @@ export default class Router {
     }
 
     beforeEach (func) {
-        this.beforeEachFuncs = func;
-        this.beforeEachFuncs(this.from, this.to, () => {});
+        this.beforeEachFuncs.push(func);
+        func(this.from, this.to, () => {});
+    }
+
+    afterEach (func) {
+        this.afterEachFuncs.push(func);
+        func(this.from, this.to);
     }
 
     back () {
