@@ -67,6 +67,13 @@ const Handler = {
             require('./nuomi/collapse').create('.container');
             loading.hide();
         });
+    },
+    loading (parame) {
+        loading.show();
+        require.ensure(['./nuomi/loading'], function(require){
+            require('./nuomi/loading').create('.container');
+            loading.hide();
+        });
     }
 }
 
@@ -114,15 +121,24 @@ const router = new Router([
     {
         path: '/collapse',
         handler: Handler.collapse
+    },
+    {
+        path: '/loading',
+        handler: Handler.loading
     }
 ]);
 
 router.beforeEach((from, to, next) => {
+    // clear container
     g.$('.container').innerHTML = '';
+
+    // reduce console.log
     console.log = oldConsole;
+
+    // replace github link
     console.log(g.$('.github a'), githubLinks[to.path.replace('/', '')]);
     g.$('.github a').href = githubLinks[to.path.replace('/', '')];
-    console.log('before1');
+    
     next();
 });
 

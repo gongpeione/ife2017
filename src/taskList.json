@@ -23,20 +23,26 @@
             {
                 "title": "动态数据绑定（一）",
                 "name": "vue1",
-                "completed": false,
+                "completed": true,
                 "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/vue1"
             },
             {
                 "title": "动态数据绑定（二）",
                 "name": "vue2",
-                "completed": false,
+                "completed": true,
                 "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/vue2"
             },
             {
                 "title": "使用CSS实现折叠面板",
                 "name": "collapse",
-                "completed": false,
+                "completed": true,
                 "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/collapse"
+            },
+            {
+                "title": "CSS3饼状loading效果",
+                "name": "loading",
+                "completed": false,
+                "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/loading"
             }
         ]
     },
