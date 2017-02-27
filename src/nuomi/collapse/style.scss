@@ -1,0 +1,44 @@
+.collapse {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    // overflow: hidden;
+    // background: #eee;
+    // border-radius: 3px;
+    width: 60%;
+
+    section {
+        margin: .1rem .1rem;
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: .03rem;
+    }
+    .content {
+        // height: 0;
+        // display: none;
+        padding: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .2s linear;
+        box-sizing: border-box;
+    }
+    label {
+        display: block;
+        background: #eee;
+        padding: .1rem .15rem;
+        font-size: .16rem;
+        cursor: pointer;
+    }
+    input[type=radio] {
+        display: none;
+
+        &:checked {
+            & ~ .content {
+                padding: .1rem .15rem;
+                max-height: 500px;
+                // display: block;
+            }
+        }
+    }
+}

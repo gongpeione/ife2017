@@ -31,6 +31,12 @@
                 "name": "vue2",
                 "completed": false,
                 "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/vue2"
+            },
+            {
+                "title": "使用CSS实现折叠面板",
+                "name": "collapse",
+                "completed": false,
+                "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/collapse"
             }
         ]
     },

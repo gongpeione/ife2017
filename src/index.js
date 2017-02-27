@@ -60,6 +60,13 @@ const Handler = {
             require('./nuomi/vue2').create('.container');
             loading.hide();
         });
+    },
+    collapse (parame) {
+        loading.show();
+        require.ensure(['./nuomi/collapse'], function(require){
+            require('./nuomi/collapse').create('.container');
+            loading.hide();
+        });
     }
 }
 
@@ -99,11 +106,14 @@ const router = new Router([
     {
         path: '/vue1',
         handler: Handler.vue1
-    }
-    ,
+    },
     {
         path: '/vue2',
         handler: Handler.vue2
+    },
+    {
+        path: '/collapse',
+        handler: Handler.collapse
     }
 ]);
 

@@ -36,7 +36,7 @@ export function create (parent, option = []) {
     });
 
     console.log(`app1.$watch('name', newVal => {
-        console.log('[Watch] ' + newVal);
+        console.log('[Watcher] ' + newVal);
     });`, true);
     app1.$watch('name', newVal => {
         console.log('[Watcher] ' + newVal);
@@ -71,11 +71,9 @@ export function create (parent, option = []) {
         if (e.keyCode === CONST.KEY_CODE.ENTER) {
             
             const command = input.value;
-            // console.log(command, true);
+            console.log(command, true);
 
             if (/app1\.data\.(\w+)+?\s?=?('.*?')?/.test(command)) {
-                // console.log(RegExp.$1, RegExp.$2);
-                console.log(command, true);
                 eval(command);
             } else {
                 console.log("[warning] Command illegal");
@@ -91,7 +89,7 @@ export function create (parent, option = []) {
 async function playCommand (outputList) {
     // console.log(outputList);
     for(let i = 0; i < outputList.length; i++) {
-        await new Promise((r, j) => { setTimeout(() => { r() } , 600); });
+        await new Promise((r, j) => { setTimeout(() => { r() } , 200); });
         await addList(outputList[i]);
     }
 }
