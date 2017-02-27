@@ -25,6 +25,12 @@
                 "name": "vue1",
                 "completed": false,
                 "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/vue1"
+            },
+            {
+                "title": "动态数据绑定（二）",
+                "name": "vue2",
+                "completed": false,
+                "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/vue2"
             }
         ]
     },

@@ -53,6 +53,13 @@ const Handler = {
             require('./nuomi/vue1').create('.container');
             loading.hide();
         });
+    },
+    vue2 (parame) {
+        loading.show();
+        require.ensure(['./nuomi/vue2'], function(require){
+            require('./nuomi/vue2').create('.container');
+            loading.hide();
+        });
     }
 }
 
@@ -93,11 +100,18 @@ const router = new Router([
         path: '/vue1',
         handler: Handler.vue1
     }
+    ,
+    {
+        path: '/vue2',
+        handler: Handler.vue2
+    }
 ]);
 
 router.beforeEach((from, to, next) => {
     g.$('.container').innerHTML = '';
     console.log = oldConsole;
+    console.log(g.$('.github a'), githubLinks[to.path.replace('/', '')]);
+    g.$('.github a').href = githubLinks[to.path.replace('/', '')];
     console.log('before1');
     next();
 });

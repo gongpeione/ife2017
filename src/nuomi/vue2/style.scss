@@ -1,0 +1,55 @@
+.console {
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    background: #eee;
+    border-radius: 3px;
+    width: 60%;
+
+    div {
+        padding: 5px 8px;
+        background: #223348;
+        border-bottom: 1px solid #404446;
+        color: #fff;
+
+        span {
+            color: rgba(255,255,255,.4);
+            margin-right: 5px;
+        }
+
+        &.command {
+            color: #8fb0bb;
+        }
+    }
+    input {
+        border: none;
+        width: 100%;
+        background: #404446;
+        padding: 5px 10px;
+        outline: none;
+        color: #eee;
+    }
+    .output {
+        max-height: 400px;
+        overflow: auto;
+
+        // div {
+        //     &:first-child {
+        //         // color: #efb030;
+        //         position: relative;
+
+        //         &::after {
+        //             content: "new";
+        //             float: right;
+        //             background: #d84e4e;
+        //             padding: 0 5px;
+        //             color: #fff;
+        //             border-radius: 5px;
+        //         }
+        //     }
+        // }
+    }
+}
