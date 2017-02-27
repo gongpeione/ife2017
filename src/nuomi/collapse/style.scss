@@ -20,8 +20,12 @@
         padding: 0;
         max-height: 0;
         overflow: hidden;
-        transition: max-height .2s linear;
-        box-sizing: border-box;
+        transition: max-height .2s cubic-bezier(0, 1, 1, 1);
+        // transition-delay: .2s;
+        // box-sizing: border-box;
+    }
+    .cover {
+        padding: .1rem .15rem;
     }
     label {
         display: block;
@@ -34,9 +38,10 @@
         display: none;
 
         &:checked {
-            & ~ .content {
-                padding: .1rem .15rem;
-                max-height: 500px;
+            & + .content {
+                // padding: .1rem .15rem;
+                max-height: 300px;
+                transition: max-height .2s cubic-bezier(1, 1, 1, 1);
                 // display: block;
             }
         }
