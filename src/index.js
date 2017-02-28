@@ -61,6 +61,13 @@ const Handler = {
             loading.hide();
         });
     },
+    vue3 (parame) {
+        loading.show();
+        require.ensure(['./nuomi/vue3'], function(require){
+            require('./nuomi/vue3').create('.container');
+            loading.hide();
+        });
+    },
     collapse (parame) {
         loading.show();
         require.ensure(['./nuomi/collapse'], function(require){
@@ -117,6 +124,10 @@ const router = new Router([
     {
         path: '/vue2',
         handler: Handler.vue2
+    },
+    {
+        path: '/vue3',
+        handler: Handler.vue3
     },
     {
         path: '/collapse',

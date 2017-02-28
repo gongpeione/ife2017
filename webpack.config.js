@@ -66,7 +66,7 @@ module.exports = {
             },
             {
                 test: /\.jpe?g$|\.gif$|\.png$|\.svg$/,
-                use: ['file-loader?limit=8192&name=static/[hash:8].[name].[ext]']
+                use: ['file-loader?limit=8192&name=static/[name].[ext]']
             },
             {
                 test: /\.js$/,

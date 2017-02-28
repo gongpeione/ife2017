@@ -33,6 +33,12 @@
                 "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/vue2"
             },
             {
+                "title": "动态数据绑定（三）",
+                "name": "vue3",
+                "completed": true,
+                "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/vue3"
+            },
+            {
                 "title": "使用CSS实现折叠面板",
                 "name": "collapse",
                 "completed": true,
