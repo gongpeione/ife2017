@@ -97,7 +97,7 @@ export default class Snake {
                 this.snakeMove();
                 this.startTick();
             }
-        }, 500 * this.speed);
+        }, 200 * this.speed);
     }
 
     keydown (e) {
