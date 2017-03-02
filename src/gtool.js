@@ -230,7 +230,12 @@ export const g = {
         const retObj = template;
         objs.forEach(obj => {
             for (let key in obj) {
-                retObj[key] = obj[key]
+                if (typeof obj[key] === 'object') {
+                    retObj[key] = g.merge(retObj[key], obj[key]);
+                } else {
+                    retObj[key] = obj[key];
+                }
+                
             }
         });
         return retObj;

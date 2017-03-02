@@ -88,6 +88,20 @@ const Handler = {
             require('./nuomi/loading').create('.container');
             loading.hide();
         });
+    },
+    slider (parame) {
+        loading.show();
+        require.ensure(['./nuomi/slider'], function(require){
+            require('./nuomi/slider').create('.container');
+            loading.hide();
+        });
+    },
+    snake (parame) {
+        loading.show();
+        require.ensure(['./business/snake'], function(require){
+            require('./business/snake').create('.container');
+            loading.hide();
+        });
     }
 }
 
@@ -147,6 +161,14 @@ const router = new Router([
     {
         path: '/loading',
         handler: Handler.loading
+    },
+    {
+        path: '/slider',
+        handler: Handler.slider
+    },
+    {
+        path: '/snake',
+        handler: Handler.snake
     }
 ]);
 

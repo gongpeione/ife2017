@@ -46,6 +46,11 @@
         }
     }
 
+    nav {
+        max-height: calc(100% - 100px);
+        overflow-y: auto;
+    }
+
     ul {
         list-style: none;
         padding: 0;
