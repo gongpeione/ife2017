@@ -75,6 +75,13 @@ const Handler = {
             loading.hide();
         });
     },
+    vue5 (parame) {
+        loading.show();
+        require.ensure(['./nuomi/vue5'], function(require){
+            require('./nuomi/vue5').create('.container');
+            loading.hide();
+        });
+    },
     collapse (parame) {
         loading.show();
         require.ensure(['./nuomi/collapse'], function(require){
@@ -100,6 +107,13 @@ const Handler = {
         loading.show();
         require.ensure(['./business/snake'], function(require){
             require('./business/snake').create('.container');
+            loading.hide();
+        });
+    },
+    player (parame) {
+        loading.show();
+        require.ensure(['./nuomi/player'], function(require){
+            require('./nuomi/player').create('.container');
             loading.hide();
         });
     }
@@ -155,6 +169,10 @@ const router = new Router([
         handler: Handler.vue4
     },
     {
+        path: '/vue5',
+        handler: Handler.vue5
+    },
+    {
         path: '/collapse',
         handler: Handler.collapse
     },
@@ -169,6 +187,10 @@ const router = new Router([
     {
         path: '/snake',
         handler: Handler.snake
+    },
+    {
+        path: '/player',
+        handler: Handler.player
     }
 ]);
 
@@ -176,32 +198,11 @@ router.beforeEach((from, to, next) => {
     // clear container
     g.$('.container').innerHTML = '';
 
-    // reduce console.log
+    // restore console.log
     console.log = oldConsole;
 
     // replace github link
-    console.log(g.$('.github a'), githubLinks[to.path.replace('/', '')]);
     g.$('.github a').href = githubLinks[to.path.replace('/', '')];
     
     next();
-});
-
-router.beforeEach((from, to, next) => {
-    console.log('before2');
-    next();
-});
-
-router.beforeEach((from, to, next) => {
-    console.log('before3');
-    // console.log(g.$('.github a'), githubLinks[to.path.replace('/', '')]);
-    // g.$('.github a').href = githubLinks[to.path.replace('/', '')];
-    next();
-});
-
-router.afterEach((from, to) => {
-    console.log('after1');
-});
-
-router.afterEach((from, to) => {
-    console.log('after2');
 });

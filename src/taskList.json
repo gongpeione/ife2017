@@ -45,6 +45,12 @@
                 "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/vue4"
             },
             {
+                "title": "动态数据绑定（五）",
+                "name": "vue5",
+                "completed": true,
+                "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/vue5"
+            },
+            {
                 "title": "使用CSS实现折叠面板",
                 "name": "collapse",
                 "completed": true,
@@ -61,6 +67,12 @@
                 "name": "slider",
                 "completed": false,
                 "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/slider"
+            },
+            {
+                "title": "仿豆瓣音乐播放器",
+                "name": "player",
+                "completed": false,
+                "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/player"
             }
         ]
     },

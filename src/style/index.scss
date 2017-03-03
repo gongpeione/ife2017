@@ -134,3 +134,13 @@ p,
         transform: rotate(359deg);
     }
 }
+
+button {
+    border: none;
+    background: $green;
+    padding: .05rem .1rem;
+    border-radius: .03rem;
+    color: $white;
+    font-size: .16rem;
+    outline: none;
+}
