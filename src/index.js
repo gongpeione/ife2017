@@ -27,94 +27,68 @@ const loading = {
 
 const Handler = {
     contextMenu (parame) {
-        loading.show();
-        require.ensure(['./nuomi/contextMenu'], function(require){
+        require.ensure([], function(require){
             require('./nuomi/contextMenu').create('.container');
-            loading.hide();
         });
     },
     threejs1 (parame) {
-        loading.show();
-        require.ensure(['./echarts/threejs1'], function(require){
+        require.ensure([], function(require){
             require('./echarts/threejs1').create('.container');
-            loading.hide();
         });
     },
     hoverEffect (parame) {
-        loading.show();
-        require.ensure(['./nuomi/hoverEffect'], function(require){
+        require.ensure([], function(require){
             require('./nuomi/hoverEffect').create('.container');
-            loading.hide();
         });
     },
     vue1 (parame) {
-        loading.show();
-        require.ensure(['./nuomi/vue1'], function(require){
+        require.ensure([], function(require){
             require('./nuomi/vue1').create('.container');
-            loading.hide();
         });
     },
     vue2 (parame) {
-        loading.show();
-        require.ensure(['./nuomi/vue2'], function(require){
+        require.ensure([], function(require){
             require('./nuomi/vue2').create('.container');
-            loading.hide();
         });
     },
     vue3 (parame) {
-        loading.show();
-        require.ensure(['./nuomi/vue3'], function(require){
+        require.ensure([], function(require){
             require('./nuomi/vue3').create('.container');
-            loading.hide();
         });
     },
     vue4 (parame) {
-        loading.show();
-        require.ensure(['./nuomi/vue4'], function(require){
+        require.ensure([], function(require){
             require('./nuomi/vue4').create('.container');
-            loading.hide();
         });
     },
     vue5 (parame) {
-        loading.show();
-        require.ensure(['./nuomi/vue5'], function(require){
+        require.ensure([], function(require){
             require('./nuomi/vue5').create('.container');
-            loading.hide();
         });
     },
     collapse (parame) {
-        loading.show();
-        require.ensure(['./nuomi/collapse'], function(require){
+        require.ensure([], function(require){
             require('./nuomi/collapse').create('.container');
-            loading.hide();
         });
     },
     loading (parame) {
-        loading.show();
-        require.ensure(['./nuomi/loading'], function(require){
+        require.ensure([], function(require){
             require('./nuomi/loading').create('.container');
-            loading.hide();
         });
     },
     slider (parame) {
-        loading.show();
-        require.ensure(['./nuomi/slider'], function(require){
+        require.ensure([], function(require){
             require('./nuomi/slider').create('.container');
-            loading.hide();
         });
     },
     snake (parame) {
-        loading.show();
-        require.ensure(['./business/snake'], function(require){
+        require.ensure([], function(require){
             require('./business/snake').create('.container');
-            loading.hide();
         });
     },
     player (parame) {
-        loading.show();
-        require.ensure(['./nuomi/player'], function(require){
+        require.ensure([], function(require){
             require('./nuomi/player').create('.container');
-            loading.hide();
         });
     }
 }
@@ -196,13 +170,23 @@ const router = new Router([
 
 router.beforeEach((from, to, next) => {
     // clear container
-    g.$('.container').innerHTML = '';
+    g.$('.container').innerHTML = '<div class="loading"></div>';
 
     // restore console.log
     console.log = oldConsole;
 
     // replace github link
     g.$('.github a').href = githubLinks[to.path.replace('/', '')];
+
+    const dsq = window.DISQUS;
+    dsq.reset({
+        reload: true,
+        config: function () {
+            // this.page.identifier = (self.$route.path || window.location.pathname)
+            this.page.url = to.fullPath;
+            this.page.identifier = to.fullPath;
+        }
+    });
     
     next();
 });

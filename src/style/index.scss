@@ -95,10 +95,10 @@ p,
 .loading {
     width: .2rem;
     height: .2rem;
-    position: fixed;
+    // position: fixed;
     right: .1rem;
     bottom: .1rem;
-    display: none;
+    // display: none;
     &:before {
         content: '';
         position: absolute;
@@ -143,4 +143,65 @@ button {
     color: $white;
     font-size: .16rem;
     outline: none;
+}
+
+#disqus {
+    right: .2rem;
+    position: fixed;
+    bottom: .2rem;
+    width: 60%;
+    z-index: 99;
+    transform: translateY(320px);
+    text-align: right;
+    transition: transform .2s ease-in-out;
+
+    input {
+        display: none;
+    }
+    label {
+        display: inline-block;
+        overflow: hidden;
+        height: .3rem;
+        width: .3rem;
+        cursor: pointer
+
+        &::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            height: .2rem;
+            width: .25rem;
+            border-radius: 50%;
+            background: #3d4448;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            right: .15rem;
+            top: .08rem;
+            width: 0;
+            border: .12rem solid transparent;
+            border-left-color: #3d4448;
+            background: transparent;
+            transform: rotate(140deg) scaleY(.4);
+        }
+    }
+}
+#comment_close {
+    display: none;
+
+    &:checked ~ #disqus {
+        transform: translateY(0);
+    }
+}
+#disqus_thread {
+    background: #fff;
+    padding: .2rem;
+    height: 3rem;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    background: #f9f9f9;
+    // box-shadow: 1px 1px 3px rgba(0,0,0,.2),-1px -1px 2px rgba(0,0,0,.2);
+    border-radius: .03rem;
 }
