@@ -19,17 +19,28 @@ export default class Router {
         this.beforeEachFuncs = [];
         this.afterEachFuncs = [];
         
-        this.origin = location.origin;
+        this.origin = location.protocol + '//' + location.host + location.pathname;
 
         this.routes = routes;
 
         this.defaultPath = '/';
+        this.page404 = () => {};
+
         this.routes.forEach(route => {
             if (route.default) {
-                defaultPath = route.default;
+                this.defaultPath = route.path;
+            }
+            if (route.path === '*') {
+                this.page404 = route.handler;
             }
         });
+    }
 
+    start () {
+        window.addEventListener("hashchange", () => {
+            this.hashName = location.hash.replace('#!', '');
+            console.log(this.hashName);
+        });
         this.firstPage();
     }
 
@@ -37,14 +48,8 @@ export default class Router {
         if (location.hash !== '') {
             this.hashName = location.hash.replace('#!', '');
         } else {
-            this.hashName = this.defaultPath;
+            location.hash = '!' + this.defaultPath;
         }
-
-        window.addEventListener("hashchange", () => {
-             this.hashName = location.hash.replace('#!', '');
-        });
-
-        // this.hashChange({ from: this.from, to: this.to });
     }
 
     get hashName () {
@@ -54,12 +59,12 @@ export default class Router {
     set hashName(newVal) {
 
         this.from.path = this.hashName;
-        this.from.fullPath = `${this.origin}/#!${this.hashName}`;
+        this.from.fullPath = `${this.origin}#!${this.hashName}`;
 
         this._hash = newVal;
 
         this.to.path = this.hashName;
-        this.to.fullPath = `${this.origin}/#!${this.hashName}`;
+        this.to.fullPath = `${this.origin}#!${this.hashName}`;
 
         this.history.push(this.hashName);
         this.historyAnchor += 1;
@@ -68,18 +73,20 @@ export default class Router {
     }
 
     hashChange (parame) {
-        // this.hashName = location.hash.replace('#!', '');
-        // console.log(this);
+
         if (this.routes.length) {
-            this.routes.forEach(route => {
+
+            let from = parame.from;
+            let to = parame.to;
+            const lastIndex = this.beforeEachFuncs.length - 1;
+            const routesLastIndex = this.routes.length - 1;
+
+            for (let i = 0; i < routesLastIndex; i++) {
+                const route = this.routes[i];
 
                 if (this.hashName === route.path) {
                     // Excute beforeEach functions
-                    const from = parame.from;
-                    const to = parame.to;
-                    const lastIndex = this.beforeEachFuncs.length - 1;
                     if (this.beforeEachFuncs.length) {
-
                         // beforeEach functions chain
                         let index = 0;
                         const next = () => {
@@ -92,29 +99,52 @@ export default class Router {
                         }
                         this.beforeEachFuncs[0](from, to, next);
                        
-                        
                     } else {
                         route.handler({ from, to });
                     }
 
                     if (this.afterEachFuncs.length) {
-                        for (let i = 0; i < this.afterEachFuncs.length; i++) {
-                            this.afterEachFuncs[i]();
+                        for (let j = 0; j < this.afterEachFuncs.length; j++) {
+                            this.afterEachFuncs[j]();
                         }  
                     }
+
+                    return;
                 }
-            });
+            }
+
+            // 404 page
+            if (this.beforeEachFuncs.length) {
+                // beforeEach functions chain
+                let index = 0;
+                const next = () => {
+                    // console.log(index);
+                    if (index < lastIndex) {
+                        this.beforeEachFuncs[++index](from, to, next, '404');
+                    } else {
+                        this.page404({ from, to });
+                    }
+                }
+                this.beforeEachFuncs[0](from, to, next, '404');
+                
+            } else {
+                this.page404({ from, to });
+            }
         }   
     }
 
     beforeEach (func) {
         this.beforeEachFuncs.push(func);
         func(this.from, this.to, () => {});
+
+        return this;
     }
 
     afterEach (func) {
         this.afterEachFuncs.push(func);
         func(this.from, this.to);
+
+        return this;
     }
 
     back () {

@@ -25,6 +25,18 @@ const loading = {
     }
 }
 
+var disqus_config = function () {
+    this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = location.href; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ife2017.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+})();
+
 const Handler = {
     contextMenu (parame) {
         require.ensure([], function(require){
@@ -103,14 +115,14 @@ taskList.forEach(collage => {
 const router = new Router([
     {
         path: '/',
-        handler: (parame) => {
-            console.log(parame);
+        handler: () => {
             g.$('.container').innerHTML = '';
         }
     },
     {
         path: '/contextMenu',
-        handler: Handler.contextMenu
+        handler: Handler.contextMenu,
+        default: true
     },
     {
         path: '/phantomjs1',
@@ -165,12 +177,22 @@ const router = new Router([
     {
         path: '/player',
         handler: Handler.player
-    }
+    },
+    {
+        path: '*',
+        handler: ({ from, to }) => {
+            g.$('.container').innerHTML = '<div class="page404">Oops~ Page cannot be found</div>';
+        }
+    },
 ]);
 
-router.beforeEach((from, to, next) => {
-    // clear container
-    g.$('.container').innerHTML = '<div class="loading"></div>';
+router.beforeEach((from, to, next, status) => {
+    
+    // if it is not first page
+    if (from.path !== to.path) {
+        // clear container
+        g.$('.container').innerHTML = '<div class="loading"></div>';
+    }
 
     // restore console.log
     console.log = oldConsole;
@@ -179,14 +201,23 @@ router.beforeEach((from, to, next) => {
     g.$('.github a').href = githubLinks[to.path.replace('/', '')];
 
     const dsq = window.DISQUS;
-    dsq.reset({
+
+    let url, identifier;
+    if (status === '404') {
+        identifier = location.protocol + '//' + location.host + location.pathname + '#!/404';
+    } else {
+        identifier = to.fullPath;
+    }
+
+    dsq && dsq.reset({
         reload: true,
         config: function () {
-            // this.page.identifier = (self.$route.path || window.location.pathname)
-            this.page.url = to.fullPath;
-            this.page.identifier = to.fullPath;
+            console.log('reset:' + identifier);
+            this.page.url = identifier;
+            this.page.identifier = identifier;
         }
     });
-    
+
     next();
-});
+
+}).start();
