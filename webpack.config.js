@@ -61,7 +61,7 @@ module.exports = {
                 use: ['html-loader?root=./static/']
             },
             {
-                test: /\.woff$|\.ttf$|\.wav$|\.mp3$/,
+                test: /\.woff$|\.ttf$|\.eot$|\.wav$|\.mp3$/,
                 use: ['file-loader']
             },
             {

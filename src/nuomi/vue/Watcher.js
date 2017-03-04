@@ -1,47 +1,39 @@
 const moustache = /({{(.*?)}})/g;
 
-const NODE_TYPE = {
-    element: 1,
-    text: 3,
-    comment: 8
-};
-
 export default class Watcher {
-    constructor (data, node, publisher) {
-        this.node = node;
-        this.name = [];
-        this.oldVal = {};
+    constructor (data, node, original, publisher) {
         this.data = data;
+        this.node = node;
         this.publisher = publisher;
+        this.original = original;
+
+        this.name = [];
+        this.curVal = {};
         this.nodeType = node.nodeType;
 
-        this.publisher.add(this);
-
         this.init();
+
+        this.publisher.add(this);
     }
 
     init () {
-        let content = '';
-        if (this.nodeType === NODE_TYPE.element) {
-            content = this.node.innerText;
-        }
-        if (this.nodeType === NODE_TYPE.text) {
-            content = this.node.nodeValue;
-        }
-        const mathes = content.match(moustache);
-        if (mathes && mathes.length) {
-            mathes.forEach(matchItem => {
+
+        const nameList = this.original.match(moustache);
+
+        if (nameList && nameList.length) {
+
+            nameList.forEach(name => {
+
+                name.match(moustache);
 
                 const orignialText = (RegExp.$1).trim();
-                const name = (RegExp.$2).trim();
+                const nameValue = (RegExp.$2).trim();
 
-                this.oldVal[name] = orignialText;
+                this.curVal[nameValue] = orignialText;
 
-                this.name.push(name);
+                this.name.push(nameValue);
             });
         }
-
-        this.update();
     }
 
     update () {
