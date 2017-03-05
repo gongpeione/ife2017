@@ -8,7 +8,8 @@ const NODE_TYPE = {
     comment: 8
 };
 
-const moustache = /({{(.*?)}})/g;
+const moustache = /({{(.*?)}})/;
+const directive = /g-(.*?)/;
 
 export default class Vue {
     constructor (option) {
@@ -41,25 +42,52 @@ export default class Vue {
 
         let content = '';
 
+        // console.log(node);
         if (node.nodeType === NODE_TYPE.element) {
+
+            Array.from(node.attributes, attr => {
+                const name = attr.name;
+                const value = attr.nodeValue;
+                
+                if (directive.test(name)) {
+                    // console.log(name);
+                    new Watcher({
+                        node: node, 
+                        type: Watcher.TYPE.BIND, 
+                        name: value, 
+                        context: this, 
+                        attrName: name
+                    });
+                }
+            });
 
             const children = Array.from(node.children);
             if (children.length) {
-                Array.from(node.children, child => {
+                children.forEach(child => {
                     this.parseNode(child);
                 });
             } else {
                 content = node.innerText;
+                
+                if (moustache.test(content)) {
+                    new Watcher({
+                        node: node, 
+                        type: Watcher.TYPE.NODE, 
+                        context: this
+                    });
+                }
             } 
         }
         if (node.nodeType === NODE_TYPE.text) {
             content = node.nodeValue;
-        }
 
-        const match = content.match(moustache);
-        if (match) {
-            console.log(match);
-            new Watcher(this.data, node, content, this.publisher);    
+            if (moustache.test(content)) {
+                new Watcher({
+                    node: node, 
+                    type: Watcher.TYPE.TEXT, 
+                    context: this
+                });
+            }
         }
     }
 

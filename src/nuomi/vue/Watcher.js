@@ -1,39 +1,71 @@
 const moustache = /({{(.*?)}})/g;
+const NODE_TYPE = {
+    element: 1,
+    text: 3,
+    comment: 8
+};
 
 export default class Watcher {
-    constructor (data, node, original, publisher) {
-        this.data = data;
-        this.node = node;
-        this.publisher = publisher;
-        this.original = original;
 
-        this.name = [];
-        this.curVal = {};
-        this.nodeType = node.nodeType;
+    static TYPE = {
+        TEXT: 'text',
+        NODE: 'node',
+        BIND: 'bind'
+    };
+    // node, type, original, context, attr
+    constructor (options) {
+
+        this.node = options.node || this.error('Node is required');
+        this.context = options.context || this.error('Context is required');
+        this.data = this.context.data;
+        this.publisher = this.context.publisher;
+
+        this.type = options.type || Watcher.TYPE.NODE;
+
+        if (this.type === Watcher.TYPE.BIND) {
+            this.attrName = options.attrName || this.error('Attribute Name is missing');
+            this.name = options.name || this.error('Attribute Value is missing')
+        }
+
+        this.curVal = [];
 
         this.init();
 
         this.publisher.add(this);
     }
 
+    error (msg) {
+        throw new Error(msg);
+    }
+
     init () {
 
-        const nameList = this.original.match(moustache);
+        if (this.type === Watcher.TYPE.NODE || this.type === Watcher.TYPE.TEXT) {
 
-        if (nameList && nameList.length) {
+            this.name = [];
+            this.originalText = this.type === Watcher.TYPE.NODE ?
+                                    this.node.innerText :
+                                    this.node.nodeValue;
+                                    
+            const nameList = this.originalText.match(moustache);
 
-            nameList.forEach(name => {
+            if (nameList && nameList.length) {
 
-                name.match(moustache);
+                nameList.forEach(name => {
 
-                const orignialText = (RegExp.$1).trim();
-                const nameValue = (RegExp.$2).trim();
+                    name.match(moustache);
 
-                this.curVal[nameValue] = orignialText;
+                    const orignialText = (RegExp.$1).trim();
+                    const nameValue = (RegExp.$2).trim();
 
-                this.name.push(nameValue);
-            });
+                    this.curVal[nameValue] = orignialText;
+
+                    this.name.push(nameValue);
+                });
+            }
         }
+
+        this.update();
     }
 
     update () {
@@ -41,22 +73,34 @@ export default class Watcher {
     }
 
     render () {
-        if (this.nodeType === NODE_TYPE.element) {
-            this.node.innerText = this.replaceContent(this.node.innerText);
-        }
-        if (this.nodeType === NODE_TYPE.text) {
-            this.node.nodeValue = this.replaceContent(this.node.nodeValue);
+        switch (this.type) {
+            case Watcher.TYPE.TEXT: 
+                this.node.nodeValue = this.replaceContent(this.originalText);
+                break;
+            case Watcher.TYPE.NODE:
+                this.node.innerText = this.replaceContent(this.originalText);
+                break;
+            case Watcher.TYPE.BIND:
+                this.node.removeAttribute(this.attrName);
+                this.node.setAttribute(this.attrName.replace('g-', ''), this.getData(this.name));
         }
     }
 
     replaceContent (original) {
-        this.name.forEach(name => {
-            const curVal = this.getData(name);
-            original = original.replace(this.oldVal[name], curVal);
 
-            this.oldVal[name] = curVal;
+        let retVal = original;
+        this.name.forEach(name => {
+            
+            const curVal = this.getData(name);
+            retVal = retVal.replace(this.curVal[name], curVal);
+
+            this.curVal[name] = curVal;
+
+            // console.log(name, retVal);
         });
-        return original;
+
+        // console.log(original);
+        return retVal;
     }
 
     getData (string) {

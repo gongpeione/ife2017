@@ -3,7 +3,7 @@ import Vue from '../vue/Vue';
 const template = `
 <figure class="player-wrap">
     <div class="cover">
-        <img src="{{ cover }}" alt="{{ title }}">
+        <img g-src="cover" g-alt="title" g-style="progressStyle">>
         <div class="start"></div>
     </div>
     <figcaption>
@@ -31,7 +31,7 @@ const template = `
             <time class="durtion">{{ time.durtion }}</time>
         </div>
         <div class="progress-bar">
-            <div class="current" style="{{ progressStyle }}"></div>
+            <div class="current" g-style="progressStyle"></div>
         </div>
     </div>
     
@@ -50,10 +50,12 @@ export default class Player {
                 title: '歌曲名',
                 singer: '歌手',
                 album: '专辑',
+                cover: 'https://ww3.sinaimg.cn/large/006tKfTcgy1fczj3tzyrqj31kw0vwh2a.jpg',
                 time: {
                     total: 236,
                     durtion: 23
-                }
+                },
+                progressStyle: 'background: #000',
             }
         });
 
