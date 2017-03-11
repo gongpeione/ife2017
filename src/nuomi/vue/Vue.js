@@ -1,4 +1,4 @@
-// import Observer from './Observer';
+import Observer from './Observer';
 import Watcher from './Watcher';
 import Publisher from './Publisher';
 
@@ -19,7 +19,7 @@ export default class Vue {
 
         this.publisher = new Publisher();
 
-        // this.observer = new Observer(this.data, this.publisher);
+        this.observer = new Observer(this.data, this.publisher);
 
         this.parseHTML(this.el);
     }

@@ -50,7 +50,7 @@ export default class Player {
                 title: '歌曲名',
                 singer: '歌手',
                 album: '专辑',
-                cover: 'https://ww3.sinaimg.cn/large/006tKfTcgy1fczj3tzyrqj31kw0vwh2a.jpg',
+                // cover: 'https://ww3.sinaimg.cn/large/006tKfTcgy1fczj3tzyrqj31kw0vwh2a.jpg',
                 time: {
                     total: 236,
                     durtion: 23
@@ -60,5 +60,7 @@ export default class Player {
         });
 
         console.log(this.vm);
+
+        window.vm = this.vm;
     }   
 }

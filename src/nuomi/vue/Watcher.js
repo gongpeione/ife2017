@@ -65,14 +65,28 @@ export default class Watcher {
             }
         }
 
-        this.update();
+        this.update('init');
     }
 
-    update () {
-        this.render();
+    update (path) {
+        if (
+            (
+                path && 
+                this.name.indexOf(path.slice(0,-1)) >= 0
+            ) ||
+            path === 'init'
+        ) {
+            this.render();
+        }
     }
 
     render () {
+        // const newVal = this.replaceContent(this.originalText);
+
+        // if (newVal === this.originalText) {
+        //     return;
+        // }
+
         switch (this.type) {
             case Watcher.TYPE.TEXT: 
                 this.node.nodeValue = this.replaceContent(this.originalText);
@@ -92,11 +106,11 @@ export default class Watcher {
         this.name.forEach(name => {
             
             const curVal = this.getData(name);
-            retVal = retVal.replace(this.curVal[name], curVal);
+            this.originalText = retVal = retVal.replace(this.curVal[name], curVal);
 
             this.curVal[name] = curVal;
 
-            // console.log(name, retVal);
+            console.log(name, curVal);
         });
 
         // console.log(original);

@@ -7,9 +7,9 @@ export default class Publisher {
         this.subscribers.push(sub);
     }
 
-    update () {
+    update (path) {
         this.subscribers.forEach(sub => {
-            sub.update();
+            sub.update(path);
         });
     }
 }
