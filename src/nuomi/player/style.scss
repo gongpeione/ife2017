@@ -1,1 +1,75 @@
 @import './iconfont.css';
+
+.player-wrap {
+    display: inline-flex;
+    position: relative;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .player {
+        display: inline-flex;
+        flex-direction: row;
+    }
+
+    .cover,
+    .cover img {
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+
+    figcaption {
+        padding: .1rem;
+    }
+
+    .control {
+        padding: .1rem;
+    }
+
+    h3 {
+        margin: 0;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        width: 2rem;
+        justify-content: space-between;
+        min-width: 3rem;
+        background: #eee;
+        position: relative;
+    }
+    .progress {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .progress-bar {
+        height: .02rem;
+        width: 100%;
+        background: #444;
+        margin-top: .05rem;
+    }
+    .volume {
+        padding: 0 .1rem;
+    }
+    .time {
+        padding: 0 .1rem;
+    }
+
+    .list {
+        width: 90%;
+        background: #ccc;
+    }
+
+    .icon-unlike,
+    .icon-like {
+        position: absolute;
+        right: .1rem;
+        top: .1rem;
+    }
+}

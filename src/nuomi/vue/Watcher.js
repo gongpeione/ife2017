@@ -95,6 +95,7 @@ export default class Watcher {
                 this.node.innerText = this.replaceContent(this.originalText);
                 break;
             case Watcher.TYPE.BIND:
+            // console.log(this.attrName);
                 this.node.removeAttribute(this.attrName);
                 this.node.setAttribute(this.attrName.replace('g-', ''), this.getData(this.name));
         }

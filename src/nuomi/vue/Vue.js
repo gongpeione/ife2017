@@ -45,12 +45,10 @@ export default class Vue {
         // console.log(node);
         if (node.nodeType === NODE_TYPE.element) {
 
-            Array.from(node.attributes, attr => {
+            Array.from(node.attributes).forEach(attr => {
                 const name = attr.name;
                 const value = attr.nodeValue;
-                
                 if (directive.test(name)) {
-                    // console.log(name);
                     new Watcher({
                         node: node, 
                         type: Watcher.TYPE.BIND, 
