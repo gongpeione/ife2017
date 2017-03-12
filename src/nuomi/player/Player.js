@@ -4,7 +4,7 @@ const template = `
 <figure class="player-wrap">
     <div class="player">
         <div class="cover">
-            <img g-src="cover" g-alt="title" g-style="progressStyle">
+            <img g-src="cover" g-alt="title">
             <div class="start"></div>
         </div>
         <div class="content">
@@ -16,12 +16,12 @@ const template = `
                 </div>
             </figcaption>
             <div class="control">
-                <span class="icon-previous"></span>
-                <span class="icon-start"></span>
-                <span class="icon-next"></span>
-                <span class="icon-cycle"></span>
-                <span class="icon-list"></span>
-                <span class="icon-unlike"></span>
+                <span class="icon-backward"></span>
+                <span class="icon-play"></span>
+                <span class="icon-forward"></span>
+                <span class="icon-loop"></span>
+                <label class="icon-list" for="listSwitch"></label>
+                <span class="icon-like"></span>
             </div>
             <div class="progress">
                 <div class="volume">
@@ -31,8 +31,7 @@ const template = `
                     </div>
                 </div>
                 <div class="time">
-                    <time class="total">{{ time.total }}</time>
-                    <time class="durtion">{{ time.durtion }}</time>
+                    <time class="total">{{ time.total }}</time><time class="durtion">{{ time.durtion }}</time>
                 </div>
                 <div class="progress-bar">
                     <div class="current" g-style="progressStyle"></div>
@@ -41,11 +40,33 @@ const template = `
         </div>
     </div>
 
+    <input type="checkbox" id="listSwitch"/>
     <section class="list">
         <ul>
-            <li>列表</li>
-            <li>列表</li>
-            <li>列表</li>
+            <li>
+                <img g-src="cover" g-alt="title">
+                <span class="info">
+                    <span class="title">{{ title }}</span>
+                    <span class="singer">{{ singer }}</span>
+                </span>
+                <span class="icon-delete"></span>
+            </li>
+            <li>
+                <img g-src="cover" g-alt="title">
+                <span class="info">
+                    <span class="title">{{ title }}</span>
+                    <span class="singer">{{ singer }}</span>
+                </span>
+                <span class="icon-delete"></span>
+            </li>
+            <li>
+                <img g-src="cover" g-alt="title">
+                <span class="info">
+                    <span class="title">{{ title }}</span>
+                    <span class="singer">{{ singer }}</span>
+                </span>
+                <span class="icon-delete"></span>
+            </li>
         </ul>
     </section>
 </figure>`;
@@ -63,17 +84,32 @@ export default class Player {
                 title: '歌曲名',
                 singer: '歌手',
                 album: '专辑',
-                // cover: 'https://ww3.sinaimg.cn/large/006tKfTcgy1fczj3tzyrqj31kw0vwh2a.jpg',
+                cover: 'https://ww4.sinaimg.cn/large/006tNc79gy1fdk3zs7r9nj308c08cdi7.jpg',
                 time: {
                     total: 236,
                     durtion: 23
                 },
-                progressStyle: 'background: #000',
+                progressStyle: 'width: 50%',
             }
         });
 
-        console.log(this.vm);
-
         window.vm = this.vm;
+
+        let url;
+        if (process.env.NODE_ENV === 'production') {
+            url = 'https://node.geeku.net/music';
+        } else {
+            url = 'http://localhost:3000/music';
+        }
+
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                const song = data[1];
+                console.log(song);
+                this.vm.data.title = song.title;
+                this.vm.data.singer = song.singer;
+                this.vm.data.cover = song.albumBig;
+            });
     }   
 }

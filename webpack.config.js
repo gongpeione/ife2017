@@ -82,7 +82,9 @@ module.exports = {
             }
         ]
     },
-    plugins: [ commonsPlugin, extract, htmlPlugin, postcss, copyStatic ],
+    plugins: [ commonsPlugin, extract, htmlPlugin, postcss, copyStatic, new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+    }) ],
     // watch: true,
 
     devServer: {

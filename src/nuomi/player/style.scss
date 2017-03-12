@@ -1,4 +1,30 @@
-@import './iconfont.css';
+@import './font.css';
+
+// Color
+$main-color: #2e87e7;
+$font-color: #295a8e;
+$light: #e7f1f7;
+$white: #fff;
+$trans-main: rgba(46, 120, 231, 0.16);
+$gray: #a6c3d4;
+$red: #e85543;
+
+// Layout
+$gap-tiny: .03rem;
+$gap-normal: .05rem;
+$gap-large: .08rem;
+$gap-giant: .1rem;
+
+$font-small: .12rem;
+$font-normal: .14rem;
+$font-big: .16rem;
+
+@mixin ellipsis($width) {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: $width;
+    overflow: hidden
+}
 
 .player-wrap {
     display: inline-flex;
@@ -6,6 +32,9 @@
     flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
+    font-size: $font-small;
+    color: $font-color;
+    line-height: 1;
 
     * {
         box-sizing: border-box;
@@ -14,33 +43,68 @@
     .player {
         display: inline-flex;
         flex-direction: row;
+        box-shadow: 1px 1px 5px 1px $trans-main;
+        border-radius: .03rem;
+        overflow: hidden;
+    }
+
+    .info {
+        display: inline-block;
+        color: $gray;
     }
 
     .cover,
     .cover img {
-        height: 1.5rem;
-        width: 1.5rem;
+        height: 1rem;
+        width: 1rem;
     }
 
     figcaption {
-        padding: .1rem;
+        padding: 0 $gap-giant;
+        padding-top: $gap-giant;
+        @include ellipsis(80%);
     }
 
     .control {
-        padding: .1rem;
+        padding: 0 $gap-giant;
+        
+        [class*=icon] {
+            font-size: $font-big;
+            margin: 0 $gap-large;
+
+            &:first-child {
+                margin-left: 0;
+            }
+        }
+
+        .icon-like {
+            position: absolute;
+            right: .1rem;
+            top: .1rem;
+            margin: 0;
+            &:hover {
+                color: $red;
+            }
+            &.liked {
+                color: $red;
+            }
+        }
     }
 
     h3 {
         margin: 0;
+        font-size: $font-big;
+        display: inline-block;
     }
 
     .content {
         display: flex;
         flex-direction: column;
         width: 2rem;
+        height: 1rem;
         justify-content: space-between;
         min-width: 3rem;
-        background: #eee;
+        background: $white;
         position: relative;
     }
     .progress {
@@ -51,25 +115,116 @@
     .progress-bar {
         height: .02rem;
         width: 100%;
-        background: #444;
+        background: $gray;
         margin-top: .05rem;
+
+        .current {
+            width: 20%;
+            height: 100%;
+            background: $main-color;
+        }
     }
     .volume {
-        padding: 0 .1rem;
+        padding: 0 $gap-giant;
+        display: flex;
+        align-items: center;
+    }
+    .volume-prgress {
+        height: .02rem;
+        width: .5rem;
+        background: $gray;
+        margin: $gap-normal;
+
+        .current {
+            width: 20%;
+            height: 100%;
+            background: $main-color;
+        }
     }
     .time {
-        padding: 0 .1rem;
+        padding: 0 $gap-giant;
+        color: $gray;
+        transform: scale(.8);
+    }
+    .total {
+        &::after {
+            content: '/';
+            margin: 0 $gap-normal;
+        }
     }
 
     .list {
         width: 90%;
-        background: #ccc;
+        max-height: 3rem;
+        overflow-y: auto;
+        border: .01rem solid $light;
+        border-top: $gap-tiny solid $trans-main;
+        border-radius: 0 0 .03rem .03rem; 
+        transform: scaleY(0);
+        transform-origin: top center;
+        transition: transform .1s ease-in-out;
+    }
+    ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        padding: $gap-giant 0;
     }
 
-    .icon-unlike,
-    .icon-like {
-        position: absolute;
-        right: .1rem;
-        top: .1rem;
+    li {
+        // padding: $gap-normal $gap-giant;
+        display: flex;
+        align-items: center;
+        border-bottom: .01rem solid $light;
+
+        &:hover {
+            background: $light;
+            // color: #fff;
+        }
+
+        img {
+            width: .3rem;
+            height: .3rem;
+        }
+
+        .info {
+            margin: 0 $gap-giant;
+            flex: 1;
+            @include ellipsis(80%);
+
+            .title {
+                color: $font-color;
+            }
+        }
+
+        .icon-delete {
+            width: .25rem;
+            line-height: .25rem;
+        }
+
+        &:first-child {
+           border-top: .01rem solid $light;
+        }
     }
+    #listSwitch {
+        display: none;
+        &:checked {
+            & + .list {
+                transform: scaleY(1);
+            }
+        }
+    }
+
+    [class*=icon] {
+        line-height: 1;
+        font-size: .12rem;
+        cursor: pointer;
+        color: $gray;
+
+        &:hover {
+            color: $main-color;
+        }
+    }
+
+    
 }

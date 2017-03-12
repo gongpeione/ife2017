@@ -79,6 +79,7 @@ export default class Observer {
                 this.handler.bubbling(path, newVal);
 
                 val = newVal;
+                console.log(val, newVal);
 
                 this.publisher.update(path);
             }
