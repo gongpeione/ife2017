@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base",
-    "build": "webpack -p --define process.env.NODE_ENV='\"production\"'"
+    "build": "NODE_ENV='production' webpack -p --progress --colors"
   },
   "author": "",
   "license": "ISC",
