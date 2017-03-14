@@ -59,7 +59,7 @@
             {
                 "title": "CSS3饼状loading效果",
                 "name": "loading",
-                "completed": false,
+                "completed": true,
                 "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/loading"
             },
             {
@@ -82,7 +82,7 @@
             {
                 "title": "WebGL No.1 - Three.js 入门",
                 "name": "threejs1",
-                "completed": false,
+                "completed": true,
                 "github": "https://github.com/gongpeione/ife2017/tree/master/src/echarts/threejs1"
             }
         ]

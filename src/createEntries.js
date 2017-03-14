@@ -15,7 +15,10 @@ export default function createEntries (parent) {
         const title = new g.vdom('li', {}, [ topLevel.title ]);
 
         topLevel.tasks.forEach(task => {
-            const taskList = new g.vdom('li', {}, [ task.title ]);
+            
+            const taskList = new g.vdom('li', { 
+                class: task.completed ? 'completed' : '' 
+            }, [ task.title ]);
             
             taskList.addEvent('click', e => {
                 location.hash = '!/' + task.name;

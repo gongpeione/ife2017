@@ -20,21 +20,28 @@
         // border-radius: .03rem;
         overflow: hidden;
         color: $white80;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
         img {
-            width: 60px;
+            width: .5rem;
             height: auto;
             display: inline-block;
             // display: none;
             vertical-align: bottom;
             margin-right: .1rem;
+            filter: drop-shadow(2px 2px rgba(0,0,0,.2));
             // margin-top: -80px;
             // float: left;
         }
         h1 {
             display: block;
-            display: none;
-            font-size: .2rem;
+            font-size: .18rem;
             margin: 0;
+            color: #fff;
+            text-shadow: 1px 1px 0 rgba(0,0,0,.2), 2px 2px 0 rgba(0,0,0,.2),;
+
             // margin-top: .1rem;
             // margin-top: .1rem;
             // line-height: 60px;
@@ -44,11 +51,6 @@
             //     color: $green;
             // }
         }
-    }
-
-    nav {
-        max-height: calc(100% - 100px);
-        overflow-y: auto;
     }
 
     ul {
@@ -69,12 +71,31 @@
                 border-left: .03rem solid $green;
                 color: $green;
             }
+
+            &::before {
+                content: '';
+                width: .08rem;
+                height: .08rem;
+                background: $yellow;
+                border-radius: 50%;
+                margin-right: .1rem;
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+            &.completed {
+                &::before {
+                    background: $green;
+                }
+            }
         }
     }
 
     nav {
         color: #fff;
         padding: .2rem 0;
+        max-height: calc(100% - 100px);
+        overflow-y: auto;
         // margin-top: -1rem;
         // min-height: 100%;
 
@@ -90,6 +111,10 @@
 
                 &:hover {
                     background: $dark;
+                }
+
+                &::before {
+                    display: none;
                 }
             }
         }
