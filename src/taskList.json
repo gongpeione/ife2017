@@ -73,6 +73,12 @@
                 "name": "player",
                 "completed": false,
                 "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/player"
+            },
+            {
+                "title": "正则表达式之简易markdown文件解析器",
+                "name": "markdown",
+                "completed": false,
+                "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/markdown"
             }
         ]
     },

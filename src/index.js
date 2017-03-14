@@ -102,6 +102,11 @@ const Handler = {
         require.ensure([], function(require){
             require('./nuomi/player').create('.container');
         });
+    },
+    markdown (parame) {
+        require.ensure([], function(require){
+            require('./nuomi/markdown').create('.container');
+        });
     }
 }
 
@@ -177,6 +182,10 @@ const router = new Router([
     {
         path: '/player',
         handler: Handler.player
+    },
+    {
+        path: '/markdown',
+        handler: Handler.markdown
     },
     {
         path: '*',
