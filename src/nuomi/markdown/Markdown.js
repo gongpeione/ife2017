@@ -24,12 +24,12 @@ export default class MarkDown {
                 lineStart: true,
             },
             emphasis: {
-                regex: /\s[\*_]([^\*_]+?)[\*_]\s/,
+                regex: /[\*_]([^\*_]+?)[\*_](?!\*)/,
                 template: '<em>{data}</em>',
                 singleLine: false
             },
             strongEm: {
-                regex: /\s[\*_]{2}(.*?)[\*_]{2}\s/,
+                regex: /[\*_]{2}(.*?)[\*_]{2}/,
                 template: '<strong>{data}</strong>',
                 singleLine: false
             },
@@ -131,63 +131,69 @@ export default class MarkDown {
 
         lines.forEach(line => {
 
-            let isBlockEle = false;
-            let isQuote = false; 
-
-            for (let key in this.markPattern) {
-
-                const pattern = this.markPattern[key];
-
-                if (!pattern.regex.test(line)) {
-                    continue;
-                }
-
-                if (pattern.singleLine) {
-                    line = line.replace(pattern.regex, pattern.template);
-                    linesParsed.push(line);
-                    return;
-                }
-                
-                if (pattern.lineStart) {
-
-                    if (key === 'blockquote') {
-                        const quoteList = [];
-                        const matches = line.match(new RegExp(pattern.regex, 'g'));
-                        console.log(matches);
-                        matches.forEach(match => {
-                            const filtered = match.replace(/>\s/, '');
-                            quoteList.push(`<p>${filtered}</p>`);
-                        });
-
-                        line = pattern.template.replace('{data}', quoteList.join('\n'));
-
-                        continue;
-                    }
-
-                    const match = line.match(pattern.regex);
-                    // console.log(match, pattern);
-                    line = pattern.template.replace('{data}', match[1]);
-
-                    isBlockEle = true;
-
-                    continue;
-                    // line = line.replace(match[0], newContent);
-                }
-                
-                const matches = line.match(new RegExp(pattern.regex, 'g'));
-                matches.forEach(match => {
-                    line = line.replace(match, pattern.template.replace('{data}', RegExp.$1));
-                });
-            }
-
-            if (!isBlockEle) {
-                linesParsed.push(`<p>${line}</p>`);
-            } else {
-                linesParsed.push(line);
-            }
+            line = this.parseLine(line);
+            linesParsed.push(line);
         });
 
         this.output.innerHTML = linesParsed.join('\n');
+    }
+
+    parseLine (line) {
+
+        let isBlockEle = false;
+        let isQuote = false; 
+
+        for (let key in this.markPattern) {
+
+            const pattern = this.markPattern[key];
+
+            if (!pattern.regex.test(line)) {
+                continue;
+            }
+
+            if (pattern.singleLine) {
+                line = line.replace(pattern.regex, pattern.template);
+                linesParsed.push(line);
+                return;
+            }
+            
+            if (pattern.lineStart) {
+
+                if (key === 'blockquote') {
+                    const quoteList = [];
+                    const matches = line.match(new RegExp(pattern.regex, 'g'));
+                    // console.log(matches);
+                    matches.forEach(match => {
+                        const filtered = match.replace(/>\s/, '');
+                        quoteList.push(this.parseLine(filtered));
+                    });
+
+                    line = pattern.template.replace('{data}', quoteList.join('\n'));
+
+                    continue;
+                }
+
+                const filtered = pattern.template.replace('{data}', RegExp.$1);
+                
+                line = line.replace(RegExp.$_, filtered);
+
+                isBlockEle = true;
+
+                continue;
+                // line = line.replace(match[0], newContent);
+            }
+            console.log(RegExp.$1, RegExp.$_);
+            const matches = line.match(new RegExp(pattern.regex, 'g'));
+            matches.forEach(match => {
+                line = line.replace(match, pattern.template.replace('{data}', RegExp.$1));
+            });
+        }
+
+        if (!isBlockEle) {
+            return `<p>${line}</p>`;
+        } else {
+            return line;
+        }
     }
 
 }
