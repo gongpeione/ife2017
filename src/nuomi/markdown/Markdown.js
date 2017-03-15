@@ -51,13 +51,13 @@ export default class MarkDown {
                 lineStart: true
             },
             link: {
-                regex: /\[(^\])+\]\([(^\)]+\)/,
+                regex: /(?:[^!]|^)\[([^\]]+?)\]\(([^\)]+?)\)/,
                 template: '<a href="$1">$2</a>',
                 singleLine: false
             },
             img: {
-                regex: /!\[(^\])+\]\([(^\)]+\)/,
-                template: '<img src="$1" alt="$2">',
+                regex: /!\[([^\]]*?)\]\(([^\)]+?)\)/,
+                template: '<img alt="$1" src="$2">',
                 singleLine: false
             },
             blockquote: {
@@ -67,19 +67,19 @@ export default class MarkDown {
                 lineStart: true
             },
             code: {
-                regex: /`([^`]+)`/,
+                regex: /`([^`\n]+)`/,
                 template: '<code>$1</code>',
                 singleLine: false
             },
             pre: {
-                regex: /```(\w+)([^`]+)```/,
-                template: '<pre>$1</pre>',
+                regex: /```(\w+)([^`]+?)```/,
+                template: '<pre class="$1">$2</pre>',
                 singleLine: false
             },
         }
 
         for (let i = 1; i <= 6; i++) {
-            const reg = '^' + '#'.repeat(i) + '\\s([^\\n]+)';
+            const reg = '^\s*?' + '#'.repeat(i) + '\\s([^\\n]+)';
             this.markPattern['h' + i] = {
                 regex: new RegExp(reg),
                 template: `<h${i}>{data}</h${i}>`,
@@ -105,7 +105,10 @@ export default class MarkDown {
             this.parse(this.value);
         })
 
+        this.parent.innerHTML = '';
         this.parent.appendChild(this.textarea);
+
+        this.update();
         // this.data.setAttribute('contenteditable', true);
         
         // this.mutation = new MutationObserver(function(mutations) {
@@ -153,8 +156,7 @@ export default class MarkDown {
 
             if (pattern.singleLine) {
                 line = line.replace(pattern.regex, pattern.template);
-                linesParsed.push(line);
-                return;
+                return line;
             }
             
             if (pattern.lineStart) {
