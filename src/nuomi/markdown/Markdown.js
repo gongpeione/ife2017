@@ -25,55 +25,55 @@ export default class MarkDown {
             },
             emphasis: {
                 regex: /[\*_]([^\*_]+?)[\*_](?!\*)/,
-                template: '<em>{data}</em>',
+                template: '<em>$1</em>',
                 singleLine: false
             },
             strongEm: {
                 regex: /[\*_]{2}(.*?)[\*_]{2}/,
-                template: '<strong>{data}</strong>',
+                template: '<strong>$1</strong>',
                 singleLine: false
             },
             strikeThrough: {
                 regex: /~{2}(.*?)~{2}/,
-                template: '<del>{data}</del>',
+                template: '<del>$1</del>',
                 singleLine: false
             },
             ul: {
                 regex: /^[\*\-\+]\s([^\n]+)/,
-                template: '<li>{data}</li>',
+                template: '<li>$1</li>',
                 singleLine: false,
                 lineStart: true
             },
             ol: {
                 regex: /^\d+\.\s([^\n]+)/,
-                template: '<li>{data}</li>',
+                template: '<li>$1</li>',
                 singleLine: false,
                 lineStart: true
             },
             link: {
                 regex: /\[(^\])+\]\([(^\)]+\)/,
-                template: '<a href="{data[1]}">{data[0]}</a>',
+                template: '<a href="$1">$2</a>',
                 singleLine: false
             },
             img: {
                 regex: /!\[(^\])+\]\([(^\)]+\)/,
-                template: '<img src="{data[1]}" alt="{data[0]}">',
+                template: '<img src="$1" alt="$2">',
                 singleLine: false
             },
             blockquote: {
                 regex: /\>\s([^\n]+)/,
-                template: '<blockquote>{data}</blockquote>',
+                template: '<blockquote>$1</blockquote>',
                 singleLine: false,
                 lineStart: true
             },
             code: {
                 regex: /`([^`]+)`/,
-                template: '<code>{data}</code>',
+                template: '<code>$1</code>',
                 singleLine: false
             },
             pre: {
                 regex: /```(\w+)([^`]+)```/,
-                template: '<pre>{data[1]}</pre>',
+                template: '<pre>$1</pre>',
                 singleLine: false
             },
         }
@@ -168,7 +168,7 @@ export default class MarkDown {
                         quoteList.push(this.parseLine(filtered));
                     });
 
-                    line = pattern.template.replace('{data}', quoteList.join('\n'));
+                    line = pattern.template.replace('$1', quoteList.join('\n'));
 
                     continue;
                 }
@@ -182,11 +182,8 @@ export default class MarkDown {
                 continue;
                 // line = line.replace(match[0], newContent);
             }
-            console.log(RegExp.$1, RegExp.$_);
-            const matches = line.match(new RegExp(pattern.regex, 'g'));
-            matches.forEach(match => {
-                line = line.replace(match, pattern.template.replace('{data}', RegExp.$1));
-            });
+
+            line = line.replace(new RegExp(pattern.regex, 'g'), pattern.template);
         }
 
         if (!isBlockEle) {
