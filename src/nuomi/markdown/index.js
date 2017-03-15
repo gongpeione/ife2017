@@ -8,5 +8,5 @@ export function create (parent, option = []) {
 
     parent.innerHTML = template;
 
-    new Markdown('.markdown .content');
+    new Markdown('.markdown .content', '.out');
 }
