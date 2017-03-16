@@ -39,14 +39,14 @@ export default class MarkDown {
                 singleLine: false
             },
             ul: {
-                regex: /^[\*\-\+]\s([^\n]+)/,
-                template: '<li>$1</li>',
+                regex: /[\*\-\+]\s([^\n]+)/,
+                template: '<ul>$1</ul>',
                 singleLine: false,
                 lineStart: true
             },
             ol: {
-                regex: /^\d+\.\s([^\n]+)/,
-                template: '<li>$1</li>',
+                regex: /\d+\.\s([^\n]+)/,
+                template: '<ol>$1</ol>',
                 singleLine: false,
                 lineStart: true
             },
@@ -129,16 +129,19 @@ export default class MarkDown {
     }
 
     parse (newVal) {
-        const lines = newVal.split('\n\n');
+        const lines = newVal.split(/\n{2,}/);
         const linesParsed = [];
 
         lines.forEach(line => {
-
             line = this.parseLine(line);
             linesParsed.push(line);
         });
 
-        this.output.innerHTML = linesParsed.join('\n');
+        const result = linesParsed.join('\n');
+
+        this && this.output && (this.output.innerHTML = result);
+
+        return result;
     }
 
     parseLine (line) {
@@ -161,16 +164,28 @@ export default class MarkDown {
             
             if (pattern.lineStart) {
 
-                if (key === 'blockquote') {
-                    const quoteList = [];
+                if (['blockquote', 'ol', 'ul'].indexOf(key) >= 0) {
+                    const list = [];
                     const matches = line.match(new RegExp(pattern.regex, 'g'));
-                    // console.log(matches);
+                    
+                    if (key === 'ul') {
+                        console.log(matches);
+                    }
+                    
                     matches.forEach(match => {
-                        const filtered = match.replace(/>\s/, '');
-                        quoteList.push(this.parseLine(filtered));
+
+                        if (key === 'blockquote') {
+                            const filtered = match.replace(/>\s/, '');
+                            list.push(this.parseLine(filtered));
+                        } else {
+                            const filtered = match.replace(/[\*\-\+]|(\d+\.)\s/, '');
+                            list.push(`<li>${filtered}</li>`);
+                        }
                     });
 
-                    line = pattern.template.replace('$1', quoteList.join('\n'));
+                    console.log(list.join('\n'), pattern.template, key);
+
+                    line = pattern.template.replace('$1', list.join(''));
 
                     continue;
                 }
