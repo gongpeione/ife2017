@@ -1,5 +1,5 @@
 export default class LNote {
-    constructor (parent, callback) {
+    constructor (parent, callback, defaultVal = 'Edit here') {
         this.parent = typeof parent === 'string' ? document.querySelector(parent) : parent;
         this.section = {
             lineNums: null,
@@ -8,6 +8,7 @@ export default class LNote {
         this.callback = callback;
 
         this.lineCounter = 1;
+        this.defaultVal = defaultVal;
 
         this.init();
     }
@@ -19,7 +20,6 @@ export default class LNote {
         lines.classList.add('line-nums');
         textarea.classList.add('textarea');
         textarea.setAttribute('contenteditable', true);
-        textarea.innerHTML = '<p>Edit here</p>';
 
         this.parent.appendChild(lines);
         this.parent.appendChild(textarea);
@@ -53,6 +53,9 @@ export default class LNote {
 
         this.addNum(lines, 1);
         this.callback(this.getContent().text);
+
+        textarea.innerHTML = this.defaultVal.split('\n').map(line => `<p>${line}</p>`).join('');
+        console.log('map', this.defaultVal.split('\n').map(line => `<p>${line}</p>`));
     }
 
     updateNums (newCounter) {

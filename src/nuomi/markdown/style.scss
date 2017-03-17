@@ -1,3 +1,5 @@
+$gray: #000;
+
 .markdown {
     height: 100%;
     overflow: auto;
@@ -29,8 +31,58 @@
         min-height: 100%;
         overflow: auto;
         padding: .2rem .3rem;
-        background: #fbf5e5;
+        font-size: .12rem;
+        // background: #fbf5e5;
         // display: none;
+
+        a {
+            color: #1d71c0;
+            text-decoration: underline;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin: .1rem 0;
+        }
+        blockquote {
+            border-left: 5px solid #f0f5f7;
+            padding: 0 .3rem;
+            color: #666;
+            margin: .4rem 0;
+            font-size: .14rem;
+            overflow: hidden;
+        }
+        ol {
+            margin: .2rem;
+        }
+        ul {
+            margin: .2rem 0;
+            list-style: none;
+        }
+        ul li::before {
+            content: '•';
+            color: #1d71c0;
+            margin-right: .1rem;
+        }
+        ul li.task-list-item::before {
+            content: '';
+        }
+        code {
+            background: #f0f5f7;
+            padding: .02rem .08rem;
+            border-radius: 3px
+        }
+        pre {
+            // border: 2px dashed #aaa;
+            padding: .2rem;
+            margin: .2rem 0;
+            background: #f0f5f7;
+            overflow-x: auto;
+            border-radius: 3px;
+            line-height: 1.5;
+        }
+        hr {
+            border: none;
+            border-top: .02rem solid #f0f5f7;
+        }
     }
 
     .editor {
@@ -41,6 +93,8 @@
         p {
             margin: 0;
             font-size: .14rem;
+            white-space: nowrap;
+            height: .14rem * 1.5;
         }
     }
 
@@ -58,5 +112,6 @@
         outline: none;
         padding: .15rem;
         color: #ddd;
+
     }
 }
