@@ -1,12 +1,13 @@
 export default class GMD {
     constructor () {
+        this.diffLines = [];
         this.init();
     }
 
     init () {
         this.markPattern = {
             separator: {
-                regex: /[\-=\*]{3,}/,
+                regex: /^[\-=\*]{3,}/,
                 template: '<hr>',
                 singleLine: true,
                 lineStart: true,
@@ -27,13 +28,13 @@ export default class GMD {
                 singleLine: false
             },
             ul: {
-                regex: /[\*\-\+]\s([^\n]+)/,
+                regex: /^[\*\-\+]\s([^\n]+)/,
                 template: '<ul>$1</ul>',
                 singleLine: false,
                 lineStart: true
             },
             ol: {
-                regex: /\d+\.\s([^\n]+)/,
+                regex: /^\d+\.\s([^\n]+)/,
                 template: '<ol>$1</ol>',
                 singleLine: false,
                 lineStart: true
@@ -49,7 +50,7 @@ export default class GMD {
                 singleLine: false
             },
             blockquote: {
-                regex: /\>\s([^\n]+)/,
+                regex: /^\>\s([^\n]+)/,
                 template: '<blockquote>$1</blockquote>',
                 singleLine: false,
                 lineStart: true
@@ -71,7 +72,7 @@ export default class GMD {
             const reg = '^\s*?' + '#'.repeat(i) + '\\s([^\\n]+)';
             this.markPattern['h' + i] = {
                 regex: new RegExp(reg),
-                template: `<h${i}>{data}</h${i}>`,
+                template: `<h${i}>$1</h${i}>`,
                 singleLine: false,
                 lineStart: true
             };
@@ -116,10 +117,20 @@ export default class GMD {
             
             if (pattern.lineStart) {
 
+                // const splitRegexStr = pattern.regex.toString().split();
+                // const lineStartReg = splitRegexStr.splice(1, 0, '^').join();
+
+                // console.log(splitRegexStr, lineStartReg);
+
+                // if (!(new RegExp(splitRegexStr.join())).test(line)) {
+                //     continue;
+                // }
+
                 if (['blockquote', 'ol', 'ul'].indexOf(key) >= 0) {
                     const list = [];
-                    const matches = line.match(new RegExp(pattern.regex, 'g'));
-                    
+                    // const matches = line.match(new RegExp(pattern.regex, 'g'));
+                    const matches = line.split('\n');
+                
                     if (key === 'ul') {
                         console.log(matches);
                     }
@@ -135,7 +146,7 @@ export default class GMD {
                         }
                     });
 
-                    console.log(list.join('\n'), pattern.template, key);
+                    // console.log(list.join('\n'), pattern.template, key);
 
                     line = pattern.template.replace('$1', list.join(''));
 
@@ -144,7 +155,8 @@ export default class GMD {
 
                 const filtered = pattern.template.replace('{data}', RegExp.$1);
                 
-                line = line.replace(RegExp.$_, filtered);
+                // line = line.replace(RegExp.$_, filtered);
+                line = line.replace(new RegExp(pattern.regex), pattern.template);
 
                 isBlockEle = true;
 
@@ -160,6 +172,10 @@ export default class GMD {
         } else {
             return line;
         }
+    }
+
+    diff () {
+        
     }
 
 }

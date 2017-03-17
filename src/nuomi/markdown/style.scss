@@ -1,6 +1,6 @@
 .markdown {
-    height: 100%;
-    overflow: hidden;
+    min-height: 100%;
+    overflow: auto;
     display: flex;
 
     .content {
@@ -24,5 +24,29 @@
         height: 100%;
         overflow: auto;
         padding: .2rem .3rem;
+        display: none;
+    }
+
+    .line-nums {
+        width: .4rem;
+        background: #333;
+        padding: .15rem .1rem;
+        text-align: right;
+        color: #ccc;
+
+        p {
+            margin: 0;
+        }
+    }
+    .textarea {
+        flex: 1;
+        background: #555;
+        outline: none;
+        padding: .15rem;
+        color: #eee;
+
+        p {
+            margin: 0;
+        }
     }
 }

@@ -1,5 +1,6 @@
 import { g } from '../../gtool';
-import GMD from './GMD'
+import GMD from './GMD';
+import LNote from './LNote';
 
 export default class MarkDown {
 
@@ -7,6 +8,9 @@ export default class MarkDown {
 
         this.parent = typeof parent === 'string' ? g.$(parent) : parent;
         this.gmd = new GMD();
+
+        console.log('md', this.parent);
+        this.lnote = new LNote(this.parent);
 
         if (output) {
             this.output = typeof output === 'string' ? g.$(output) : output;
@@ -17,18 +21,18 @@ export default class MarkDown {
 
     init () {
 
-        this.textarea = new g.vdom('textarea', {
-            class: 'g-MarkDown'
-        }, [ this.parent.innerHTML.replace(/&gt;/g, '>') ]).render();
+        // this.textarea = new g.vdom('textarea', {
+        //     class: 'g-MarkDown'
+        // }, [ this.parent.innerHTML.replace(/&gt;/g, '>') ]).render();
 
-        this.textarea.addEventListener('keyup', e => {
-            this.update();
-        })
+        // this.textarea.addEventListener('keyup', e => {
+        //     this.update();
+        // })
 
-        this.parent.innerHTML = '';
-        this.parent.appendChild(this.textarea);
+        // this.parent.innerHTML = '';
+        // this.parent.appendChild(this.textarea);
 
-        this.update();
+        // this.update();
         // this.data.setAttribute('contenteditable', true);
         
         // this.mutation = new MutationObserver(function(mutations) {
