@@ -1,4 +1,5 @@
 export default class LNote {
+
     constructor (parent, callback, defaultVal = 'Edit here') {
         this.parent = typeof parent === 'string' ? document.querySelector(parent) : parent;
         this.section = {
@@ -7,13 +8,14 @@ export default class LNote {
         };
         this.callback = callback;
 
-        this.lineCounter = 1;
+        this.lineCounter = 0;
         this.defaultVal = defaultVal;
 
         this.init();
     }
 
     init () {
+
         const lines = this.section.lineNums = document.createElement('div');
         const textarea = this.section.textarea = document.createElement('div');
 
@@ -30,8 +32,7 @@ export default class LNote {
 
             this.callback(newContent.text);
             this.updateNums(newContent.nums); 
-
-            console.log(mutations);
+            this.saveContent(newContent.html);
         });
 
         this.mutation.observe(textarea, { 
@@ -45,17 +46,19 @@ export default class LNote {
             if (this.lineCounter > 1) {
                 return;
             }
-            console.log(textarea.innerText);
             if (textarea.innerText.length === 1 && e.keyCode === 8) {
                 e.preventDefault();
             }
         });
 
-        this.addNum(lines, 1);
-        this.callback(this.getContent().text);
+        const defaultVal = this.loadContent();
+        if (defaultVal) {
+            this.setContent(defaultVal, true);
+        } else {
+            this.setContent(this.defaultVal);
+        }
 
-        textarea.innerHTML = this.defaultVal.split('\n').map(line => `<p>${line}</p>`).join('');
-        console.log('map', this.defaultVal.split('\n').map(line => `<p>${line}</p>`));
+        this.callback(defaultVal);
     }
 
     updateNums (newCounter) {
@@ -101,7 +104,25 @@ export default class LNote {
 
         return {
             nums: lines.length,
-            text: text
+            text: text,
+            html: this.section.textarea.innerHTML
         }
     }
-}
+
+    saveContent (content) {
+        localStorage.setItem('GMD_content', content);
+    }
+
+    setContent (content, isHTML) {
+        if (isHTML) {
+            this.section.textarea.innerHTML = content;
+        } else {
+            this.section.textarea.innerHTML = content.split('\n').map(line => `<p>${line}</p>`).join('');
+        }
+        
+    }
+
+    loadContent () {
+        return localStorage.getItem('GMD_content') || false;
+    }
+ }

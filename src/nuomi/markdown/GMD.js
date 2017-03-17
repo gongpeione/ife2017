@@ -116,16 +116,7 @@ export default class GMD {
             }
             
             if (pattern.lineStart) {
-
-                // const splitRegexStr = pattern.regex.toString().split();
-                // const lineStartReg = splitRegexStr.splice(1, 0, '^').join();
-
-                // console.log(splitRegexStr, lineStartReg);
-
-                // if (!(new RegExp(splitRegexStr.join())).test(line)) {
-                //     continue;
-                // }
-
+                
                 if (['blockquote', 'ol', 'ul'].indexOf(key) >= 0) {
                     const list = [];
                     // const matches = line.match(new RegExp(pattern.regex, 'g'));
@@ -175,7 +166,7 @@ export default class GMD {
     }
 
     diff () {
-        
+
     }
 
 }
