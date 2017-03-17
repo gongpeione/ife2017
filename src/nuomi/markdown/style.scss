@@ -1,5 +1,5 @@
 .markdown {
-    min-height: 100%;
+    height: 100%;
     overflow: auto;
     display: flex;
 
@@ -18,40 +18,45 @@
             outline: none;
         }
     }  
-
-    .out {
+    
+    .cover {
         flex: 1;
         height: 100%;
         overflow: auto;
+    }
+
+    .out {
+        min-height: 100%;
+        overflow: auto;
         padding: .2rem .3rem;
+        background: #fbf5e5;
         // display: none;
     }
 
     .editor {
         display: flex;
         flex: 1;
+        min-height: 100%;
+
+        p {
+            margin: 0;
+            font-size: .14rem;
+        }
     }
 
     .line-nums {
-        width: .4rem;
-        background: #333;
+        min-width: .4rem;
+        background: #30363a;
         padding: .15rem .1rem;
         text-align: right;
-        color: #ccc;
-
-        p {
-            margin: 0;
-        }
+        color: #6f8b9c;
+        border-right: 1px dashed #535e63;
     }
     .textarea {
         flex: 1;
-        background: #555;
+        background: #30363a;
         outline: none;
         padding: .15rem;
-        color: #eee;
-
-        p {
-            margin: 0;
-        }
+        color: #ddd;
     }
 }

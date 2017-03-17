@@ -26,13 +26,14 @@ export default class LNote {
 
         this.mutation = new MutationObserver((mutations) => {
 
-            const lines = Array.from(textarea.querySelectorAll('p'));
-            this.callback(
-                lines.reduce((str, line2) => str + line2.innerText + '\n', '')
-            );
-            this.updateNums(lines.length); 
+            const newContent = this.getContent();
 
+            this.callback(newContent.text);
+            this.updateNums(newContent.nums); 
+
+            console.log(mutations);
         });
+
         this.mutation.observe(textarea, { 
             // attributes: true, 
             childList: true, 
@@ -40,7 +41,18 @@ export default class LNote {
             subtree: true
         });
 
+        textarea.addEventListener('keydown', e => {
+            if (this.lineCounter > 1) {
+                return;
+            }
+            console.log(textarea.innerText);
+            if (textarea.innerText.length === 1 && e.keyCode === 8) {
+                e.preventDefault();
+            }
+        });
+
         this.addNum(lines, 1);
+        this.callback(this.getContent().text);
     }
 
     updateNums (newCounter) {
@@ -61,7 +73,9 @@ export default class LNote {
 
         if (newCounter < this.lineCounter) {
             console.log(newCounter, this.lineCounter, this.lineCounter - newCounter);
-            for (let i = 0; i < this.lineCounter - newCounter; i++, this.lineCounter--) {
+            const rmAmount = this.lineCounter - newCounter;
+            for (let i = 0; i < rmAmount; i++, this.lineCounter--) {
+                console.log(this.section.lineNums.lastChild);
                 this.section.lineNums.lastChild.remove();
             }
         }
@@ -76,5 +90,15 @@ export default class LNote {
         num.innerText = index;
 
         parent.appendChild(num);
+    }
+
+    getContent () {
+        const lines = Array.from(this.section.textarea.querySelectorAll('p'));
+        const text = lines.reduce((str, line2) => str + line2.innerText + '\n', '');
+
+        return {
+            nums: lines.length,
+            text: text
+        }
     }
 }
