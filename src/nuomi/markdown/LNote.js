@@ -1,10 +1,11 @@
 export default class LNote {
-    constructor (parent) {
+    constructor (parent, callback) {
         this.parent = typeof parent === 'string' ? document.querySelector(parent) : parent;
         this.section = {
             lineNums: null,
             textarea: null
         };
+        this.callback = callback;
 
         this.lineCounter = 1;
 
@@ -24,15 +25,13 @@ export default class LNote {
         this.parent.appendChild(textarea);
 
         this.mutation = new MutationObserver((mutations) => {
-            // console.log();
-            const lines = Array.from(textarea.querySelectorAll('p'));
-            
-            console.log(lines);
-            this.updateNums(lines.length);
 
-            // mutations.forEach(function(mutation) {
-            //     console.log(mutation, mutation.type);
-            // });    
+            const lines = Array.from(textarea.querySelectorAll('p'));
+            this.callback(
+                lines.reduce((str, line2) => str + line2.innerText + '\n', '')
+            );
+            this.updateNums(lines.length); 
+
         });
         this.mutation.observe(textarea, { 
             // attributes: true, 
@@ -52,7 +51,7 @@ export default class LNote {
 
         if (newCounter > this.lineCounter) {
             const fragment = document.createDocumentFragment();
-            
+
             for (let i = this.lineCounter; i < newCounter; i++, this.lineCounter++) {
                 this.addNum(fragment, i + 1);
             }

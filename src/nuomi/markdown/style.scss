@@ -20,11 +20,16 @@
     }  
 
     .out {
-        flex: 2;
+        flex: 1;
         height: 100%;
         overflow: auto;
         padding: .2rem .3rem;
-        display: none;
+        // display: none;
+    }
+
+    .editor {
+        display: flex;
+        flex: 1;
     }
 
     .line-nums {

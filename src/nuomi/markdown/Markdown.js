@@ -4,17 +4,16 @@ import LNote from './LNote';
 
 export default class MarkDown {
 
-    constructor (parent, output) {
+    constructor (editor, output) {
 
-        this.parent = typeof parent === 'string' ? g.$(parent) : parent;
+        this.editor = typeof editor === 'string' ? g.$(editor) : editor;
+        this.output = typeof output === 'string' ? g.$(output) : output;
+
         this.gmd = new GMD();
-
-        console.log('md', this.parent);
-        this.lnote = new LNote(this.parent);
-
-        if (output) {
-            this.output = typeof output === 'string' ? g.$(output) : output;
-        }
+        this.lnote = new LNote(this.editor, newVal => {
+            console.log(newVal);
+            this.update(newVal);
+        });
 
         this.init();
     }
@@ -48,7 +47,7 @@ export default class MarkDown {
         // });
     }
 
-    update () {
-        this.output.innerHTML = this.gmd.parse(this.textarea.value);
+    update (newVal) {
+        this.output.innerHTML = this.gmd.parse(newVal);
     }
 }
