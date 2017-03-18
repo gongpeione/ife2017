@@ -67,27 +67,40 @@ export default class LNote {
             return;
         }
 
+        // Add new lines
         if (newCounter > this.lineCounter) {
             const fragment = document.createDocumentFragment();
 
             for (let i = this.lineCounter; i < newCounter; i++, this.lineCounter++) {
-                this.addNum(fragment, i + 1);
+                fragment.appendChild(this.newNum(i + 1));
             }
 
             this.section.lineNums.appendChild(fragment);
         }
 
+        // Remove lines
         if (newCounter < this.lineCounter) {
-            console.log(newCounter, this.lineCounter, this.lineCounter - newCounter);
+            
             const rmAmount = this.lineCounter - newCounter;
-            for (let i = 0; i < rmAmount; i++, this.lineCounter--) {
-                console.log(this.section.lineNums.lastChild);
-                this.section.lineNums.lastChild.remove();
+            
+            if (rmAmount < 50) {
+                for (let i = 0; i < rmAmount; i++, this.lineCounter--) {
+                    this.section.lineNums.lastChild.remove();
+                }
+                return;
             }
+            
+            this.section.lineNums.innerHTML = '';
+            const fragment = document.createDocumentFragment();
+
+            for (let i = 1; i <= newCounter; i++, this.lineCounter++) {
+                fragment.appendChild(this.newNum(i));
+            }
+            this.section.lineNums.appendChild(fragment);
         }
     }
 
-    addNum (parent, index) {
+    newNum (index) {
 
         const num = document.createElement('p');
                 
@@ -95,7 +108,7 @@ export default class LNote {
         num.dataset.index = index;
         num.innerText = index;
 
-        parent.appendChild(num);
+        return num;
     }
 
     getContent () {

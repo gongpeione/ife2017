@@ -41,7 +41,7 @@ export default class GMD {
             },
             link: {
                 regex: /(?:[^!]|^)\[([^\]]+?)\]\(([^\)]+?)\)/,
-                template: '<a href="$1">$2</a>',
+                template: '<a href="$2">$1</a>',
                 singleLine: false
             },
             img: {
@@ -116,7 +116,7 @@ export default class GMD {
             }
             
             if (pattern.lineStart) {
-                
+
                 if (['blockquote', 'ol', 'ul'].indexOf(key) >= 0) {
                     const list = [];
                     // const matches = line.match(new RegExp(pattern.regex, 'g'));
