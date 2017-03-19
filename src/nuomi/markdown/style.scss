@@ -95,13 +95,14 @@ $gray: #000;
             font-size: .14rem;
             white-space: nowrap;
             height: .14rem * 1.5;
+            letter-spacing: .01rem;
         }
     }
 
     .line-nums {
         min-width: .4rem;
         background: #30363a;
-        padding: .15rem .1rem;
+        padding: .15rem .05rem;
         text-align: right;
         color: #6f8b9c;
         border-right: 1px dashed #535e63;
@@ -113,5 +114,28 @@ $gray: #000;
         padding: .15rem;
         color: #ddd;
 
+    }
+}
+
+@media print {
+    body,
+    html {
+        height: auto!important;
+        overflow: auto!important;
+    }
+    .entries,
+    .markdown .cover:first-child,
+    .github,
+    #disqus
+    {
+        display: none!important;
+    }
+    .container {
+        width: 100%;
+    }
+    .out {
+        display: block !important;
+        width: 100%;
+        padding: 0!important;
     }
 }

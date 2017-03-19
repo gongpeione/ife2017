@@ -77,7 +77,7 @@
             {
                 "title": "正则表达式之简易markdown文件解析器",
                 "name": "markdown",
-                "completed": false,
+                "completed": true,
                 "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/markdown"
             }
         ]

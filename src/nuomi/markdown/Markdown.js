@@ -56,7 +56,6 @@ export default class MarkDown {
 
         this.gmd = new GMD();
         this.lnote = new LNote(this.editor, newVal => {
-            console.log(newVal);
             this.update(newVal);
         }, defaultVal);
 

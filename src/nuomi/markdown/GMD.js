@@ -121,10 +121,6 @@ export default class GMD {
                     const list = [];
                     // const matches = line.match(new RegExp(pattern.regex, 'g'));
                     const matches = line.split('\n');
-                
-                    if (key === 'ul') {
-                        console.log(matches);
-                    }
                     
                     matches.forEach(match => {
 
