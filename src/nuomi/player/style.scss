@@ -18,6 +18,9 @@ $gap-giant: .1rem;
 $font-small: .12rem;
 $font-normal: .14rem;
 $font-big: .16rem;
+$font-giant: .18rem;
+
+$height: 1.1rem;
 
 @mixin ellipsis($width) {
     white-space: nowrap;
@@ -53,17 +56,23 @@ $font-big: .16rem;
     .info {
         display: inline-block;
         color: $gray;
+        padding: $gap-normal 0;
+        // font-size: .12rem;
+        // transform: scale(.8) translateY(-.05rem);
+        transform-origin: left center;
     }
 
     .cover,
     .cover img {
-        height: 1rem;
-        width: 1rem;
+        height: $height;
+        width: $height;
     }
 
     figcaption {
         padding: 0 $gap-giant;
         padding-top: $gap-giant;
+        display: flex;
+        flex-direction: column;
         @include ellipsis(80%);
     }
 
@@ -95,7 +104,7 @@ $font-big: .16rem;
 
     h3 {
         margin: 0;
-        font-size: $font-big;
+        font-size: $font-giant;
         display: inline-block;
     }
 
@@ -103,9 +112,9 @@ $font-big: .16rem;
         display: flex;
         flex-direction: column;
         width: 2rem;
-        height: 1rem;
+        height: $height;
         justify-content: space-between;
-        min-width: 3rem;
+        // min-width: 3rem;
         background: $white;
         position: relative;
         flex: 1;
@@ -128,7 +137,7 @@ $font-big: .16rem;
         }
     }
     .volume {
-        padding: 0 $gap-giant;
+        padding: 0 $gap-giant + .02rem;
         display: flex;
         align-items: center;
     }
@@ -145,16 +154,18 @@ $font-big: .16rem;
         }
     }
     .time {
-        padding: 0 $gap-giant;
+        padding: 0 .04rem;
         color: $gray;
         transform: scale(.8);
-    }
-    .total {
-        &::after {
-            content: '/';
-            margin: 0 $gap-normal;
+
+        .current {
+            &::after {
+                content: '/';
+                margin: 0 $gap-normal;
+            }
         }
     }
+    
 
     .list {
         width: 90%;

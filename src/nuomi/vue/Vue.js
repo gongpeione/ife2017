@@ -25,11 +25,11 @@ export default class Vue {
 
         this.observer = new Observer(this.data, this.publisher);
 
-        this.methods = option.methods;
+        this.events = option.events;
         this.watchList = option.watch;
         
         this.parseHTML(this.el);
-        this.addMethods(this.el);
+        this.addEvents(this.el);
         this.watch();
     }
 
@@ -52,11 +52,11 @@ export default class Vue {
         });
     }
 
-    addMethods (root) {
-        Object.keys(this.methods).forEach(event => {
-            Object.keys(this.methods[event]).forEach(el => {
+    addEvents (root) {
+        Object.keys(this.events).forEach(event => {
+            Object.keys(this.events[event]).forEach(el => {
                 root.querySelectorAll(el).forEach(each => {
-                    each.addEventListener(event, this.methods[event][el].bind(this));
+                    each.addEventListener(event, this.events[event][el].bind(this));
                 });
             });
         });
