@@ -141,7 +141,7 @@ $height: 1.1rem;
         display: flex;
         align-items: center;
     }
-    .volume-prgress {
+    .volume-progress {
         height: .02rem;
         width: .5rem;
         background: $gray;
@@ -150,7 +150,12 @@ $height: 1.1rem;
         .current {
             width: 20%;
             height: 100%;
-            background: $main-color;
+            background: lighten($main-color, 10%);
+        }
+        &:hover {
+            .current {
+                background: $main-color;
+            }
         }
     }
     .time {

@@ -12,7 +12,7 @@ const template = `
                 <h3>{{ title }}</h3>
                 <div class="info">
                     <span class="singer">{{ singer }}</span>
-                    <span class="album">{{ album }}</span>
+                    <!--<span class="album">{{ album }}</span>-->
                 </div>
             </figcaption>
             
@@ -21,13 +21,13 @@ const template = `
                 <span id="play" g-class="playOrPauseIcon"></span>
                 <span id="next" class="icon-forward"></span>
                 <span id="loop" g-class="loopIcon"></span>
-                <label class="icon-list" for="listSwitch"></label>
+                <!--<label class="icon-list" for="listSwitch"></label>-->
                 <span class="icon-like"></span>
             </div>
             <div class="progress">
                 <div class="volume">
-                    <span class="icon-volume"></span>
-                    <div class="volume-prgress">
+                    <span g-class="volumeIcon"></span>
+                    <div class="volume-progress">
                         <div class="current" g-style="volumeStyle"></div>
                     </div>
                 </div>
@@ -82,6 +82,7 @@ export default class Player {
         this._currentPlayList = 0;
         this._duration = 0;
         this._current = 0;
+        this._volume = 1;
 
         this.init();
     }
@@ -93,12 +94,15 @@ export default class Player {
         this.audio.setAttribute('id', 'g-player');
         this.audio.addEventListener('timeupdate', e => {
             this.current = this.audio.currentTime;
+            if (this.current === this.duration) {
+                this.next();
+            }
         });
         this.audio.addEventListener('loadedmetadata', e => {
             this.duration = this.audio.duration;
         });
 
-        document.body.appendChild(this.audio);
+        this.parent.appendChild(this.audio);
 
         // Bind Vue and html
         const player = this;
@@ -107,7 +111,7 @@ export default class Player {
             data: {
                 title: '歌曲名',
                 singer: '歌手',
-                album: '专辑',
+                // album: '专辑',
                 cover: 'https://ww4.sinaimg.cn/large/006tNc79gy1fdk3zs7r9nj308c08cdi7.jpg',
                 time: {
                     duration: '00:00',
@@ -116,7 +120,8 @@ export default class Player {
                 progress: 0,
                 playOrPause: 'pause',
                 isPlaying: true,
-                loop: 'loop'
+                loop: 'loop',
+                volumeIcon: 'icon-volume'
             },
             events: {
                 click: {
@@ -135,6 +140,25 @@ export default class Player {
                     },
                     '#loop': function (e) {
                         this.data.loop = this.data.loop === 'loop' ? 'shuffle' : 'loop'
+                    },
+                    '.volume-progress': function (e) {
+                        const progressRect = e.target.getBoundingClientRect();
+                        const pointX = e.clientX;
+                        
+                        let persent = 0;
+                        const difference = e.clientX - progressRect.left;
+                        if (difference <= 0) {
+                            persent = 0;
+                        } else if (difference >= progressRect.width) {
+                            persent = 1;
+                        } else {
+                            persent = difference / progressRect.width;
+                        }
+
+                        player.volume = persent;
+
+                        // force update value
+                        this.publisher.update('volumeStyle');
                     }
                 }
             },
@@ -156,6 +180,9 @@ export default class Player {
                 },
                 progressStyle: function () {
                     return `width: ${this.data.progress}%`;
+                },
+                volumeStyle: function () {
+                    return `width: ${player.volume * 100}%`;
                 }
             }
         });
@@ -164,6 +191,19 @@ export default class Player {
         this.data = this.vm.data;
 
         this.fetch();
+
+        this.keybordCtrl();
+    }
+
+    keybordCtrl () {
+        window.addEventListener('keyup', e => {
+            switch (e.keyCode) {
+                case 38: this.volume += .1; break;
+                case 40: this.volume -= .1; break;
+                case 37: this.previous(); break;
+                case 39: this.next(); break;
+            }
+        });
     }
 
     fetch () {
@@ -236,6 +276,30 @@ export default class Player {
         this._current = newVal;
         this.data.time.current = this.secToTime(this.current);
         this.data.progress = (this.current / this.duration) * 100;
+    }
+
+    get volume () {
+        return this._volume;
+    }
+
+    set volume (newVal) {
+
+        if (newVal >= .99) {
+            newVal = 1;
+        }
+        if (newVal <= 0.01) {
+            newVal = 0;
+            this.data.volumeIcon = 'icon-volume-mute';
+        } else {
+            this.data.volumeIcon = 'icon-volume';
+        }
+        console.log(newVal);
+        
+        this._volume = newVal;
+        this.audio.volume = this.volume;
+
+        // focus update volume's progress bar
+        this.vm.publisher.update('volumeStyle');
     }
 
     randomList () {
