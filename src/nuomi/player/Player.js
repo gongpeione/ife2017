@@ -88,11 +88,11 @@ export default class Player {
 
     init () {
 
-        // this.audio = document.querySelector('#g-player') || document.createElement('audio');
-        // this.audio.style.display = 'none';
-        // this.audio.setAttribute('id', 'g-player');
-        this.audio = new Audio();
-        this.audio.crossOrigin = 'anonymous';
+        this.audio = document.querySelector('#g-player') || document.createElement('audio');
+        this.audio.style.display = 'none';
+        this.audio.setAttribute('id', 'g-player');
+        // this.audio = new Audio();
+        // this.audio.crossOrigin = 'anonymous';
         this.audio.addEventListener('timeupdate', e => {
             this.current = this.audio.currentTime;
         });
@@ -103,7 +103,7 @@ export default class Player {
             this.next();
         });
 
-        // this.parent.appendChild(this.audio);
+        this.parent.appendChild(this.audio);
 
         // Bind Vue and html
         const player = this;
