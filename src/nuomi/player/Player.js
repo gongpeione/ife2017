@@ -4,8 +4,7 @@ const template = `
 <figure class="player-wrap">
     <div class="player">
         <div class="cover">
-            <img g-src="cover" g-alt="title">
-            <div class="start"></div>
+            <img g-src="cover" g-alt="title"><canvas id="freq" width="500" height="200"></canvas>
         </div>
         <div class="content">
             <figcaption g-title="title">
@@ -89,20 +88,22 @@ export default class Player {
 
     init () {
 
-        this.audio = document.querySelector('#g-player') || document.createElement('audio');
-        this.audio.style.display = 'none';
-        this.audio.setAttribute('id', 'g-player');
+        // this.audio = document.querySelector('#g-player') || document.createElement('audio');
+        // this.audio.style.display = 'none';
+        // this.audio.setAttribute('id', 'g-player');
+        this.audio = new Audio();
+        this.audio.crossOrigin = 'anonymous';
         this.audio.addEventListener('timeupdate', e => {
             this.current = this.audio.currentTime;
-            if (this.current === this.duration) {
-                this.next();
-            }
         });
         this.audio.addEventListener('loadedmetadata', e => {
             this.duration = this.audio.duration;
         });
+        this.audio.addEventListener('ended', () => {
+            this.next();
+        });
 
-        this.parent.appendChild(this.audio);
+        // this.parent.appendChild(this.audio);
 
         // Bind Vue and html
         const player = this;
@@ -293,7 +294,7 @@ export default class Player {
         } else {
             this.data.volumeIcon = 'icon-volume';
         }
-        console.log(newVal);
+        // console.log(newVal);
         
         this._volume = newVal;
         this.audio.volume = this.volume;
@@ -337,5 +338,43 @@ export default class Player {
         const min = ~~(totalSec / 60);
         const sec = totalSec % 60;
         return `${min >= 10 ? min : '0' + min}:${sec >= 10 ? sec : '0' + sec}`;
+    }
+
+    freq () {
+
+        this.audioContext = new AudioContext();
+        this.analyser = this.audioContext.createAnalyser();
+        this.source = this.audioContext.createMediaElementSource(this.audio);
+        this.source.connect(this.analyser);
+        this.analyser.connect(this.audioContext.destination);
+        this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
+
+        const _this = this;
+        const canvas = document.querySelector('#freq');
+        const context = canvas.getContext('2d');
+        context.fillStyle = '#2e87e7';
+
+        function getFrequencyData () {
+            _this.analyser.getByteFrequencyData(_this.frequencyData);
+            const length = _this.analyser.fftSize / 3;
+            const width = canvas.width / length;
+
+            context.clearRect(0, 0, canvas.width, canvas.height)
+            for (let i=0;i<length;i+=1) {
+                
+                context.fillRect(
+                    i * width, 
+                    canvas.height - _this.frequencyData[i], 
+                    width, 
+                    _this.frequencyData[i]
+                )
+            }
+            requestAnimationFrame(getFrequencyData);
+        }
+
+        this.audio.src = 'http://mr1.doubanio.com/d087a35554d58d9dc04485c9b92d423f/0/fm/song/p749701_128k.mp3';
+
+        this.audio.play();
+        getFrequencyData();
     }
 }

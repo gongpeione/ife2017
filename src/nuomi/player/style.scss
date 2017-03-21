@@ -62,10 +62,13 @@ $height: 1.1rem;
         transform-origin: left center;
     }
 
-    .cover,
-    .cover img {
+    .cover {
+        position: relative;
         height: $height;
-        width: $height;
+        img {
+            height: $height;
+            width: $height;
+        }
     }
 
     figcaption {
@@ -245,5 +248,12 @@ $height: 1.1rem;
         }
     }
 
+    #freq {
+        height: 20%;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+    }
     
 }
