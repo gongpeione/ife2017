@@ -19,9 +19,47 @@ export default class Vue {
 
         this.publisher = new Publisher();
 
+        // add computed property
+        this.computedList = option.computed;
+        this.computed();
+
         this.observer = new Observer(this.data, this.publisher);
 
+        this.methods = option.methods;
+        this.watchList = option.watch;
+        
         this.parseHTML(this.el);
+        this.addMethods(this.el);
+        this.watch();
+    }
+
+    computed () {
+        const _this = this;
+        Object.keys(this.computedList).forEach(key => {
+            Object.defineProperty(this.data, key, {
+                enumerable: true,
+                configurable: false,
+                get () {
+                    return _this.computedList[key].apply(_this);
+                }
+            });
+        });
+    }
+
+    watch () {
+        Object.keys(this.watchList).forEach(name => {
+            this.$watch(name, this.watchList[name])
+        });
+    }
+
+    addMethods (root) {
+        Object.keys(this.methods).forEach(event => {
+            Object.keys(this.methods[event]).forEach(el => {
+                root.querySelectorAll(el).forEach(each => {
+                    each.addEventListener(event, this.methods[event][el].bind(this));
+                });
+            });
+        });
     }
 
     parseHTML (html) {
@@ -90,6 +128,6 @@ export default class Vue {
     }
 
     $watch (name, callback) {
-        this.observer.$watch(name, callback);
+        this.observer.$watch(name, callback.bind(this));
     }
 }

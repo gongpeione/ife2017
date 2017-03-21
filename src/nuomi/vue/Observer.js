@@ -64,6 +64,12 @@ export default class Observer {
 
         this.checkData(val, path); 
 
+        // if this property is an computed one then do nothing
+        const property = Object.getOwnPropertyDescriptor(data, key);
+        if (property.configurable === false) {
+            return;
+        }
+        
         Object.defineProperty(data, key, {
             enumerable: true,
             configurable: false,
@@ -75,11 +81,11 @@ export default class Observer {
                 if (newVal === val) {
                     return;
                 }
-                this.checkData(newVal, parent);
-                this.handler.bubbling(path, newVal);
 
                 val = newVal;
-                console.log(val, newVal);
+
+                this.checkData(newVal, parent);
+                this.handler.bubbling(path, newVal);
 
                 this.publisher.update(path);
             }

@@ -70,10 +70,7 @@ export default class Watcher {
 
     update (path) {
         if (
-            (
-                path && 
-                this.name.indexOf(path.slice(0,-1)) >= 0
-            ) ||
+            (path && this.name.indexOf(path.slice(0,-1)) >= 0) ||
             path === 'init'
         ) {
             this.render();
@@ -111,7 +108,7 @@ export default class Watcher {
 
             this.curVal[name] = curVal;
 
-            console.log(name, curVal);
+            // console.log(name, curVal);
         });
 
         // console.log(original);

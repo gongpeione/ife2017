@@ -35,6 +35,7 @@ $font-big: .16rem;
     font-size: $font-small;
     color: $font-color;
     line-height: 1;
+    width: 4rem;
 
     * {
         box-sizing: border-box;
@@ -46,6 +47,7 @@ $font-big: .16rem;
         box-shadow: 1px 1px 5px 1px $trans-main;
         border-radius: .03rem;
         overflow: hidden;
+        width: 100%;
     }
 
     .info {
@@ -106,6 +108,7 @@ $font-big: .16rem;
         min-width: 3rem;
         background: $white;
         position: relative;
+        flex: 1;
     }
     .progress {
         display: flex;
