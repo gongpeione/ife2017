@@ -5,6 +5,7 @@ const template = `
     <div class="player">
         <div class="cover">
             <img g-src="cover" g-alt="title"><canvas id="freq" width="500" height="200"></canvas>
+            <div class="loading" g-style="loadingStyle"></div>
         </div>
         <div class="content">
             <figcaption g-title="title">
@@ -72,7 +73,7 @@ const template = `
 </figure>`;
 
 export default class Player {
-    constructor (parent) {
+    constructor (parent, enableFreq = false) {
         this.parent = parent = typeof parent === 'string' ? 
                         document.querySelector(parent) : 
                         parent;
@@ -82,6 +83,8 @@ export default class Player {
         this._duration = 0;
         this._current = 0;
         this._volume = 1;
+        this.isLoading = true;
+        this.enableFreq = enableFreq;
 
         this.init();
     }
@@ -184,6 +187,11 @@ export default class Player {
                 },
                 volumeStyle: function () {
                     return `width: ${player.volume * 100}%`;
+                },
+                loadingStyle: function () {
+                    if (!player.isLoading) {
+                        return `display: none`;
+                    }
                 }
             }
         });
@@ -194,7 +202,8 @@ export default class Player {
         this.fetch();
 
         this.keybordCtrl();
-        this.freq();
+        
+        this.enableFreq && this.freq();
     }
 
     keybordCtrl () {
@@ -204,6 +213,7 @@ export default class Player {
                 case 40: this.volume -= .1; break;
                 case 37: this.previous(); break;
                 case 39: this.next(); break;
+                case 32: this.data.isPlaying ? this.pause() : this.play() ; break;
             }
         });
     }
@@ -230,6 +240,10 @@ export default class Player {
                 this.audio.setAttribute('src', song.original);
                 
                 this.play();
+                this.isLoading = false;
+
+                // focus update loading status
+                this.vm.publisher.update('loadingStyle');
             });
     }
 

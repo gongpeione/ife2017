@@ -8,5 +8,5 @@ export function create (parent, option = []) {
 
     parent.innerHTML = template;
 
-    new Player(parent);
+    new Player(parent, true);
 }

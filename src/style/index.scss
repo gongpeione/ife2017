@@ -56,13 +56,14 @@ p,
 }
 
 .container {
-    display: inline-block;
+    display: flex;
     width: calc(100% - 260px);
     height: 100%;
     float: left;
-    // background: #eee;
     position: relative;
     overflow: hidden;
+    justify-content: center;
+    align-items: center;
 }
 
 .github {

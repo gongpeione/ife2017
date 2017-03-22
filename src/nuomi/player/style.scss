@@ -69,6 +69,14 @@ $height: 1.1rem;
             height: $height;
             width: $height;
         }
+        .loading {
+            position: absolute;
+            top: .1rem;
+            left: .1rem;
+            z-index: 1;
+            transform: scale(.4);
+            transform-origin: left top;
+        }
     }
 
     figcaption {

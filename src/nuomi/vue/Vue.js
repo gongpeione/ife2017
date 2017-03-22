@@ -87,13 +87,21 @@ export default class Vue {
                 const name = attr.name;
                 const value = attr.nodeValue;
                 if (directive.test(name)) {
-                    new Watcher({
-                        node: node, 
-                        type: Watcher.TYPE.BIND, 
-                        name: value, 
-                        context: this, 
-                        attrName: name
-                    });
+
+                    if (RegExp.$1 === 'for') {
+
+                        
+
+                    } else {
+                        new Watcher({
+                            node: node, 
+                            type: Watcher.TYPE.BIND, 
+                            name: value, 
+                            context: this, 
+                            attrName: name
+                        });
+                    }
+                    
                 }
             });
 
