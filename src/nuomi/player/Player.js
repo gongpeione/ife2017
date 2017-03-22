@@ -88,11 +88,11 @@ export default class Player {
 
     init () {
 
-        this.audio = document.querySelector('#g-player') || document.createElement('audio');
-        this.audio.style.display = 'none';
-        this.audio.setAttribute('id', 'g-player');
-        // this.audio = new Audio();
-        // this.audio.crossOrigin = 'anonymous';
+        // this.audio = document.querySelector('#g-player') || document.createElement('audio');
+        // this.audio.style.display = 'none';
+        // this.audio.setAttribute('id', 'g-player');
+        this.audio = new Audio();
+        this.audio.crossOrigin = 'anonymous';
         this.audio.addEventListener('timeupdate', e => {
             this.current = this.audio.currentTime;
         });
@@ -194,6 +194,7 @@ export default class Player {
         this.fetch();
 
         this.keybordCtrl();
+        this.freq();
     }
 
     keybordCtrl () {
@@ -308,7 +309,24 @@ export default class Player {
     }
 
     play () {
-        this.audio.play();
+        // navigator.getUserMedia({ audio: true }, (stream) => {
+        //     // CaptureImageStream = stream;
+        //     console.log(stream);
+        //     this.audio.src = window.URL.createObjectURL(stream);
+        //     this.audio.play();
+        // }, (errBack) => {
+        //     console.log(errBack);
+        // }); 
+        // const playPromise = this.audio.play();
+        // if (playPromise) {
+        //     playPromise.then(() => {
+        //         this.data.isPlaying = true;
+        //     }).catch(
+        //         err => console.log(err)
+        //     );
+        // }   
+        // this.audio.src = window.URL.createObjectURL(this.data.original);
+        this.audio.play();     
         this.data.isPlaying = true;
     }
 
@@ -360,21 +378,18 @@ export default class Player {
             const width = canvas.width / length;
 
             context.clearRect(0, 0, canvas.width, canvas.height)
-            for (let i=0;i<length;i+=1) {
+            for (let i = 0; i < length; i += 20) {
                 
                 context.fillRect(
                     i * width, 
                     canvas.height - _this.frequencyData[i], 
-                    width, 
+                    width * 15, 
                     _this.frequencyData[i]
                 )
             }
             requestAnimationFrame(getFrequencyData);
         }
 
-        this.audio.src = 'http://mr1.doubanio.com/d087a35554d58d9dc04485c9b92d423f/0/fm/song/p749701_128k.mp3';
-
-        this.audio.play();
         getFrequencyData();
     }
 }
