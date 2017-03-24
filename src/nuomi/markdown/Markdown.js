@@ -1,5 +1,5 @@
 import { g } from '../../gtool';
-import GMD from './GMD';
+import GMD from 'gmd-markdown-parser';
 import LNote from './LNote';
 
 const defaultVal = `# h1\n

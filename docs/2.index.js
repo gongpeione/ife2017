@@ -1,2 +1,511 @@
-webpackJsonp([2,15],{126:function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}function i(e){arguments.length>1&&void 0!==arguments[1]?arguments[1]:[];e="string"==typeof e?l.g.$(e):e,e.innerHTML=a.default,new s.default(".markdown .editor",".markdown .out")}Object.defineProperty(t,"__esModule",{value:!0}),t.create=i;var o=n(377),a=r(o),l=n(59);n(362);var u=n(329),s=r(u)},327:function(e,t,n){"use strict";function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},o=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}(),a=function(){function e(){r(this,e),this.diffLines=[],this.init()}return o(e,[{key:"init",value:function(){this.markPattern={separator:{regex:/^[\-=\*]{3,}/,template:"<hr>",singleLine:!0,lineStart:!0},emphasis:{regex:/[\*_]([^\*_]+?)[\*_](?!\*)/,template:"<em>$1</em>",singleLine:!1},strongEm:{regex:/[\*_]{2}(.*?)[\*_]{2}/,template:"<strong>$1</strong>",singleLine:!1},strikeThrough:{regex:/~{2}(.*?)~{2}/,template:"<del>$1</del>",singleLine:!1},ul:{regex:/^[\*\-\+]\s([^\n]+)/,template:"<ul>$1</ul>",singleLine:!1,lineStart:!0},ol:{regex:/^\d+\.\s([^\n]+)/,template:"<ol>$1</ol>",singleLine:!1,lineStart:!0},link:{regex:/(?:[^!]|^)\[([^\]]+?)\]\(([^\)]+?)\)/,template:'<a href="$2">$1</a>',singleLine:!1},img:{regex:/!\[([^\]]*?)\]\(([^\)]+?)\)/,template:'<img alt="$1" src="$2">',singleLine:!1},blockquote:{regex:/^\>\s([^\n]+)/,template:"<blockquote>$1</blockquote>",singleLine:!1,lineStart:!0},code:{regex:/`([^`\n]+)`/,template:"<code>$1</code>",singleLine:!1},pre:{regex:/```(\w+)([^`]+?)```/,template:'<pre class="$1">$2</pre>',singleLine:!1}};for(var e=1;e<=6;e++){var t="^s*?"+"#".repeat(e)+"\\s([^\\n]+)";this.markPattern["h"+e]={regex:new RegExp(t),template:"<h"+e+">$1</h"+e+">",singleLine:!1,lineStart:!0}}console.log(this.markPattern)}},{key:"update",value:function(){return this.parse(this.textarea.value)}},{key:"parse",value:function(e){var t=this,n=e.split(/\n{2,}/),r=n.map(function(e){return t.parseLine(e)}),i=r.join("\n");return i}},{key:"parseLine",value:function(e){var t=this,n=!1,r=function(r){var i=t.markPattern[r];if(!i.regex.test(e))return"continue";if(i.singleLine)return e=e.replace(i.regex,i.template),{v:e};if(i.lineStart){if(["blockquote","ol","ul"].indexOf(r)>=0){var o=[],a=e.split("\n");return a.forEach(function(e){if("blockquote"===r){var n=e.replace(/>\s/,"");o.push(t.parseLine(n))}else{var i=e.replace(/[\*\-\+]\s|\d+\.\s/,"");o.push("<li>"+i+"</li>")}}),e=i.template.replace("$1",o.join("")),"continue"}i.template.replace("{data}",RegExp.$1);return e=e.replace(new RegExp(i.regex),i.template),n=!0,"continue"}e=e.replace(new RegExp(i.regex,"g"),i.template)};for(var o in this.markPattern){var a=r(o);switch(a){case"continue":continue;default:if("object"===("undefined"==typeof a?"undefined":i(a)))return a.v}}return n?e:"<p>"+e+"</p>"}},{key:"diff",value:function(){}}]),e}();t.default=a},328:function(e,t,n){"use strict";function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var i=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}(),o=function(){function e(t,n){var i=arguments.length>2&&void 0!==arguments[2]?arguments[2]:"Edit here";r(this,e),this.parent="string"==typeof t?document.querySelector(t):t,this.section={lineNums:null,textarea:null},this.callback=n,this.lineCounter=0,this.defaultVal=i,this.init()}return i(e,[{key:"init",value:function(){var e=this,t=this.section.lineNums=document.createElement("div"),n=this.section.textarea=document.createElement("div");t.classList.add("line-nums"),n.classList.add("textarea"),n.setAttribute("contenteditable",!0),this.parent.appendChild(t),this.parent.appendChild(n),this.mutation=new MutationObserver(function(t){var n=e.getContent();e.callback(n.text),e.updateNums(n.nums),e.saveContent(n.html)}),this.mutation.observe(n,{childList:!0,characterData:!0,subtree:!0}),n.addEventListener("keydown",function(t){e.lineCounter>1||1===n.innerText.length&&8===t.keyCode&&t.preventDefault()});var r=this.loadContent();r?this.setContent(r,!0):this.setContent(this.defaultVal),this.callback(r)}},{key:"updateNums",value:function(e){if(e!==this.lineCounter){if(e>this.lineCounter){for(var t=document.createDocumentFragment(),n=this.lineCounter;n<e;n++,this.lineCounter++)t.appendChild(this.newNum(n+1));this.section.lineNums.appendChild(t)}if(e<this.lineCounter){var r=this.lineCounter-e;if(r<50){for(var i=0;i<r;i++,this.lineCounter--)this.section.lineNums.lastChild.remove();return}this.section.lineNums.innerHTML="";for(var o=document.createDocumentFragment(),a=1;a<=e;a++,this.lineCounter++)o.appendChild(this.newNum(a));this.section.lineNums.appendChild(o)}}}},{key:"newNum",value:function(e){var t=document.createElement("p");return t.classList.add("line-num"),t.dataset.index=e,t.innerText=e,t}},{key:"getContent",value:function(){var e=Array.from(this.section.textarea.querySelectorAll("p")),t=e.reduce(function(e,t){return e+t.innerText+"\n"},"");return{nums:e.length,text:t,html:this.section.textarea.innerHTML}}},{key:"saveContent",value:function(e){localStorage.setItem("GMD_content",e)}},{key:"setContent",value:function(e,t){t?this.section.textarea.innerHTML=e:this.section.textarea.innerHTML=e.split("\n").map(function(e){return"<p>"+e+"</p>"}).join("")}},{key:"loadContent",value:function(){return localStorage.getItem("GMD_content")||!1}}]),e}();t.default=o},329:function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var o=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}(),a=n(59),l=n(327),u=r(l),s=n(328),d=r(s),c="# h1\n\n\n## h2\n\n### h3\n\n#### h4\n\n##### h5\n\n###### h6\n\n---\n\nCode: `code`, em: *em*, strong: **strong**, strike through: ~~through~~\n\n---\n\n[Link](https://google.com)\n\n![img](https://ww4.sinaimg.cn/large/006tNc79gy1fdk3zs7r9nj308c08cdi7.jpg)\n\n> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis veniam recusandae maiores aperiam? Vero amet iste aliquam, architecto sapiente ipsum provident, adipisci molestiae. Incidunt natus, tempora ratione atque praesentium \n> assumenda!\n\n---\n\npre:\n\n```javascript\nalert(1)\n```\n\n---\n\n- unordered list1\n- list1\n- list1\n- list1\n\n1. ordered list\n2. ordered list\n3. ordered list\n4. ordered list",m=function(){function e(t,n){var r=this;i(this,e),this.editor="string"==typeof t?a.g.$(t):t,this.output="string"==typeof n?a.g.$(n):n,this.gmd=new u.default,this.lnote=new d.default(this.editor,function(e){r.update(e)},c),this.init()}return o(e,[{key:"init",value:function(){}},{key:"update",value:function(e){this.output.innerHTML=this.gmd.parse(e)}}]),e}();t.default=m},349:function(e,t,n){t=e.exports=n(318)(),t.push([e.i,'.markdown{height:100%;overflow:auto;display:flex}.markdown .content{flex:1}.markdown .content textarea{width:100%;height:100%;max-width:100%;max-height:100%;border:none;background:#2a2f31;color:#eee;padding:.1rem;outline:none}.markdown .cover{flex:1;height:100%;overflow:auto}.markdown .out{min-height:100%;overflow:auto;padding:.2rem .3rem;font-size:.12rem}.markdown .out a{color:#1d71c0;text-decoration:underline}.markdown .out h1,.markdown .out h2,.markdown .out h3,.markdown .out h4,.markdown .out h5,.markdown .out h6{margin:.1rem 0}.markdown .out blockquote{border-left:5px solid #f0f5f7;padding:0 .3rem;color:#666;margin:.4rem 0;font-size:.14rem;overflow:hidden}.markdown .out ol{margin:.2rem}.markdown .out ul{margin:.2rem 0;list-style:none}.markdown .out ul li:before{content:"\\2022";color:#1d71c0;margin-right:.1rem}.markdown .out ul li.task-list-item:before{content:""}.markdown .out code{background:#f0f5f7;padding:.02rem .08rem;border-radius:3px}.markdown .out pre{padding:.2rem;margin:.2rem 0;background:#f0f5f7;overflow-x:auto;border-radius:3px;line-height:1.5}.markdown .out hr{border:none;border-top:.02rem solid #f0f5f7}.markdown .editor{display:flex;flex:1;min-height:100%}.markdown .editor p{margin:0;font-size:.14rem;white-space:nowrap;height:.21rem;letter-spacing:.01rem}.markdown .line-nums{min-width:.4rem;background:#30363a;padding:.15rem .05rem;text-align:right;color:#6f8b9c;border-right:1px dashed #535e63}.markdown .textarea{flex:1;background:#30363a;outline:none;padding:.15rem;color:#ddd}@media print{body,html{height:auto!important;overflow:auto!important}#disqus,.entries,.github,.markdown .cover:first-child{display:none!important}.container,.out{width:100%}.out{display:block!important;padding:0!important}}',""])},362:function(e,t,n){var r=n(349);"string"==typeof r&&(r=[[e.i,r,""]]);n(319)(r,{});r.locals&&(e.exports=r.locals)},377:function(e,t){e.exports="<div class=markdown> <div class=cover> <div class=editor></div> </div> <div class=cover> <div class=out></div> </div> </div>"}});
+webpackJsonp([2,15],{
+
+/***/ 126:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.create = create;
+
+var _template = __webpack_require__(378);
+
+var _template2 = _interopRequireDefault(_template);
+
+var _gtool = __webpack_require__(59);
+
+__webpack_require__(361);
+
+var _Markdown = __webpack_require__(328);
+
+var _Markdown2 = _interopRequireDefault(_Markdown);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function create(parent) {
+    var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
+    parent = typeof parent === 'string' ? _gtool.g.$(parent) : parent;
+
+    parent.innerHTML = _template2.default;
+
+    new _Markdown2.default('.markdown .editor', '.markdown .out');
+}
+
+/***/ }),
+
+/***/ 327:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var LNote = function () {
+    function LNote(parent, callback) {
+        var defaultVal = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'Edit here';
+
+        _classCallCheck(this, LNote);
+
+        this.parent = typeof parent === 'string' ? document.querySelector(parent) : parent;
+        this.section = {
+            lineNums: null,
+            textarea: null
+        };
+        this.callback = callback;
+
+        this.lineCounter = 0;
+        this.defaultVal = defaultVal;
+
+        this.init();
+    }
+
+    _createClass(LNote, [{
+        key: 'init',
+        value: function init() {
+            var _this = this;
+
+            var lines = this.section.lineNums = document.createElement('div');
+            var textarea = this.section.textarea = document.createElement('div');
+
+            lines.classList.add('line-nums');
+            textarea.classList.add('textarea');
+            textarea.setAttribute('contenteditable', true);
+
+            this.parent.appendChild(lines);
+            this.parent.appendChild(textarea);
+
+            this.mutation = new MutationObserver(function (mutations) {
+
+                var newContent = _this.getContent();
+
+                _this.callback(newContent.text);
+                _this.updateNums(newContent.nums);
+                _this.saveContent(newContent.html);
+            });
+
+            this.mutation.observe(textarea, {
+                childList: true,
+                characterData: true,
+                subtree: true
+            });
+
+            textarea.addEventListener('keydown', function (e) {
+                if (_this.lineCounter > 1) {
+                    return;
+                }
+                if (textarea.innerText.length === 1 && e.keyCode === 8) {
+                    e.preventDefault();
+                }
+            });
+
+            var defaultVal = this.loadContent();
+            if (defaultVal) {
+                this.setContent(defaultVal, true);
+            } else {
+                this.setContent(this.defaultVal);
+            }
+
+            this.callback(defaultVal);
+        }
+    }, {
+        key: 'updateNums',
+        value: function updateNums(newCounter) {
+
+            if (newCounter === this.lineCounter) {
+                return;
+            }
+
+            if (newCounter > this.lineCounter) {
+                var fragment = document.createDocumentFragment();
+
+                for (var i = this.lineCounter; i < newCounter; i++, this.lineCounter++) {
+                    fragment.appendChild(this.newNum(i + 1));
+                }
+
+                this.section.lineNums.appendChild(fragment);
+            }
+
+            if (newCounter < this.lineCounter) {
+
+                var rmAmount = this.lineCounter - newCounter;
+
+                if (rmAmount < 50) {
+                    for (var _i = 0; _i < rmAmount; _i++, this.lineCounter--) {
+                        this.section.lineNums.lastChild.remove();
+                    }
+                    return;
+                }
+
+                this.section.lineNums.innerHTML = '';
+                var _fragment = document.createDocumentFragment();
+
+                for (var _i2 = 1; _i2 <= newCounter; _i2++, this.lineCounter++) {
+                    _fragment.appendChild(this.newNum(_i2));
+                }
+                this.section.lineNums.appendChild(_fragment);
+            }
+        }
+    }, {
+        key: 'newNum',
+        value: function newNum(index) {
+
+            var num = document.createElement('p');
+
+            num.classList.add('line-num');
+            num.dataset.index = index;
+            num.innerText = index;
+
+            return num;
+        }
+    }, {
+        key: 'getContent',
+        value: function getContent() {
+            var lines = Array.from(this.section.textarea.querySelectorAll('p'));
+            var text = lines.reduce(function (str, line2) {
+                return str + line2.innerText + '\n';
+            }, '');
+
+            return {
+                nums: lines.length,
+                text: text,
+                html: this.section.textarea.innerHTML
+            };
+        }
+    }, {
+        key: 'saveContent',
+        value: function saveContent(content) {
+            localStorage.setItem('GMD_content', content);
+        }
+    }, {
+        key: 'setContent',
+        value: function setContent(content, isHTML) {
+            if (isHTML) {
+                this.section.textarea.innerHTML = content;
+            } else {
+                this.section.textarea.innerHTML = content.split('\n').map(function (line) {
+                    return '<p>' + line + '</p>';
+                }).join('');
+            }
+        }
+    }, {
+        key: 'loadContent',
+        value: function loadContent() {
+            return localStorage.getItem('GMD_content') || false;
+        }
+    }]);
+
+    return LNote;
+}();
+
+exports.default = LNote;
+
+/***/ }),
+
+/***/ 328:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _gtool = __webpack_require__(59);
+
+var _gmdMarkdownParser = __webpack_require__(370);
+
+var _gmdMarkdownParser2 = _interopRequireDefault(_gmdMarkdownParser);
+
+var _LNote = __webpack_require__(327);
+
+var _LNote2 = _interopRequireDefault(_LNote);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var defaultVal = '# h1\n\n\n## h2\n\n### h3\n\n#### h4\n\n##### h5\n\n###### h6\n\n---\n\nCode: `code`, em: *em*, strong: **strong**, strike through: ~~through~~\n\n---\n\n[Link](https://google.com)\n\n![img](https://ww4.sinaimg.cn/large/006tNc79gy1fdk3zs7r9nj308c08cdi7.jpg)\n\n> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis veniam recusandae maiores aperiam? Vero amet iste aliquam, architecto sapiente ipsum provident, adipisci molestiae. Incidunt natus, tempora ratione atque praesentium \n> assumenda!\n\n---\n\npre:\n\n```javascript\nalert(1)\n```\n\n---\n\n- unordered list1\n- list1\n- list1\n- list1\n\n1. ordered list\n2. ordered list\n3. ordered list\n4. ordered list';
+
+var MarkDown = function () {
+    function MarkDown(editor, output) {
+        var _this = this;
+
+        _classCallCheck(this, MarkDown);
+
+        this.editor = typeof editor === 'string' ? _gtool.g.$(editor) : editor;
+        this.output = typeof output === 'string' ? _gtool.g.$(output) : output;
+
+        this.gmd = new _gmdMarkdownParser2.default();
+        this.lnote = new _LNote2.default(this.editor, function (newVal) {
+            _this.update(newVal);
+        }, defaultVal);
+
+        this.init();
+    }
+
+    _createClass(MarkDown, [{
+        key: 'init',
+        value: function init() {}
+    }, {
+        key: 'update',
+        value: function update(newVal) {
+            this.output.innerHTML = this.gmd.parse(newVal);
+        }
+    }]);
+
+    return MarkDown;
+}();
+
+exports.default = MarkDown;
+
+/***/ }),
+
+/***/ 348:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(318)();
+// imports
+
+
+// module
+exports.push([module.i, ".markdown{height:100%;overflow:auto;display:flex}.markdown .content{flex:1}.markdown .content textarea{width:100%;height:100%;max-width:100%;max-height:100%;border:none;background:#2a2f31;color:#eee;padding:.1rem;outline:none}.markdown .cover{flex:1;height:100%;overflow:auto}.markdown .out{min-height:100%;overflow:auto;padding:.2rem .3rem;font-size:.12rem}.markdown .out a{color:#1d71c0;text-decoration:underline}.markdown .out h1,.markdown .out h2,.markdown .out h3,.markdown .out h4,.markdown .out h5,.markdown .out h6{margin:.1rem 0}.markdown .out blockquote{border-left:5px solid #f0f5f7;padding:0 .3rem;color:#666;margin:.4rem 0;font-size:.14rem;overflow:hidden}.markdown .out ol{margin:.2rem}.markdown .out ul{margin:.2rem 0;list-style:none}.markdown .out ul li:before{content:\"\\2022\";color:#1d71c0;margin-right:.1rem}.markdown .out ul li.task-list-item:before{content:\"\"}.markdown .out code{background:#f0f5f7;padding:.02rem .08rem;border-radius:3px}.markdown .out pre{padding:.2rem;margin:.2rem 0;background:#f0f5f7;overflow-x:auto;border-radius:3px;line-height:1.5}.markdown .out hr{border:none;border-top:.02rem solid #f0f5f7}.markdown .editor{display:flex;flex:1;min-height:100%}.markdown .editor p{margin:0;font-size:.14rem;white-space:nowrap;height:.21rem;letter-spacing:.01rem}.markdown .line-nums{min-width:.4rem;background:#30363a;padding:.15rem .05rem;text-align:right;color:#6f8b9c;border-right:1px dashed #535e63}.markdown .textarea{flex:1;background:#30363a;outline:none;padding:.15rem;color:#ddd}@media print{body,html{height:auto!important;overflow:auto!important}#disqus,.entries,.github,.markdown .cover:first-child{display:none!important}.container,.out{width:100%}.out{display:block!important;padding:0!important}}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 361:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(348);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(319)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js?minimize!../../../node_modules/sass-loader/index.js!./style.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js?minimize!../../../node_modules/sass-loader/index.js!./style.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 370:
+/***/ (function(module, exports, __webpack_require__) {
+
+const GMD = __webpack_require__(371);
+module.exports = GMD;
+
+/***/ }),
+
+/***/ 371:
+/***/ (function(module, exports) {
+
+class GMD {
+    constructor () {
+        this.diffLines = [];
+        this.init();
+    }
+
+    init () {
+        this.markPattern = {
+            separator: {
+                regex: /^[\-=\*]{3,}/,
+                template: '<hr>',
+                singleLine: true,
+                lineStart: true,
+            },
+            emphasis: {
+                regex: /[\*_]([^\*_]+?)[\*_](?!\*)/,
+                template: '<em>$1</em>',
+                singleLine: false
+            },
+            strongEm: {
+                regex: /[\*_]{2}(.*?)[\*_]{2}/,
+                template: '<strong>$1</strong>',
+                singleLine: false
+            },
+            strikeThrough: {
+                regex: /~{2}(.*?)~{2}/,
+                template: '<del>$1</del>',
+                singleLine: false
+            },
+            ul: {
+                regex: /^[\*\-\+]\s([^\n]+)/,
+                template: '<ul>$1</ul>',
+                singleLine: false,
+                lineStart: true
+            },
+            ol: {
+                regex: /^\d+\.\s([^\n]+)/,
+                template: '<ol>$1</ol>',
+                singleLine: false,
+                lineStart: true
+            },
+            link: {
+                regex: /(?:[^!]|^)\[([^\]]+?)\]\(([^\)]+?)\)/,
+                template: '<a href="$2">$1</a>',
+                singleLine: false
+            },
+            img: {
+                regex: /!\[([^\]]*?)\]\(([^\)]+?)\)/,
+                template: '<img alt="$1" src="$2">',
+                singleLine: false
+            },
+            blockquote: {
+                regex: /^\>\s([^\n]+)/,
+                template: '<blockquote>$1</blockquote>',
+                singleLine: false,
+                lineStart: true
+            },
+            code: {
+                regex: /`([^`\n]+)`/,
+                template: '<code>$1</code>',
+                singleLine: false
+            },
+            pre: {
+                regex: /```(\w+)([^`]+?)```/,
+                template: '<pre class="$1">$2</pre>',
+                singleLine: false
+            },
+        }
+
+        // Add h1-h6 regex
+        for (let i = 1; i <= 6; i++) {
+            const reg = '^\s*?' + '#'.repeat(i) + '\\s([^\\n]+)';
+            this.markPattern['h' + i] = {
+                regex: new RegExp(reg),
+                template: `<h${i}>$1</h${i}>`,
+                singleLine: false,
+                lineStart: true
+            };
+        }
+
+        // console.log(this.markPattern);
+    }
+
+    update () {
+        return this.parse(this.textarea.value);
+    }
+
+    parse (val) {
+        const lines = val.split(/\n{2,}/);
+
+        const linesParsed = lines.map(line => {
+            return this.parseLine(line);
+        });
+
+        const result = linesParsed.join('\n');
+
+        return result;
+    }
+
+    parseLine (line) {
+
+        let isBlockEle = false;
+        let isQuote = false; 
+
+        for (let key in this.markPattern) {
+
+            const pattern = this.markPattern[key];
+
+            if (!pattern.regex.test(line)) {
+                continue;
+            }
+
+            if (pattern.singleLine) {
+                line = line.replace(pattern.regex, pattern.template);
+                return line;
+            }
+            
+            if (pattern.lineStart) {
+
+                if (['blockquote', 'ol', 'ul'].indexOf(key) >= 0) {
+                    const list = [];
+                    // const matches = line.match(new RegExp(pattern.regex, 'g'));
+                    const matches = line.split('\n');
+                    
+                    matches.forEach(match => {
+
+                        if (key === 'blockquote') {
+                            const filtered = match.replace(/>\s/, '');
+                            list.push(this.parseLine(filtered));
+                        } else {
+                            const filtered = match.replace(/[\*\-\+]\s|\d+\.\s/, '');
+                            list.push(`<li>${filtered}</li>`);
+                        }
+                    });
+
+                    // console.log(list.join('\n'), pattern.template, key);
+
+                    line = pattern.template.replace('$1', list.join(''));
+
+                    continue;
+                }
+
+                const filtered = pattern.template.replace('{data}', RegExp.$1);
+                
+                // line = line.replace(RegExp.$_, filtered);
+                line = line.replace(new RegExp(pattern.regex), pattern.template);
+
+                isBlockEle = true;
+
+                continue;
+                // line = line.replace(match[0], newContent);
+            }
+
+            line = line.replace(new RegExp(pattern.regex, 'g'), pattern.template);
+        }
+
+        if (!isBlockEle) {
+            return `<p>${line}</p>`;
+        } else {
+            return line;
+        }
+    }
+
+    diff () {
+
+    }
+
+}
+
+module.exports = GMD;
+
+/***/ }),
+
+/***/ 378:
+/***/ (function(module, exports) {
+
+module.exports = "<div class=markdown> <div class=cover> <div class=editor></div> </div> <div class=cover> <div class=out></div> </div> </div>";
+
+/***/ })
+
+});
 //# sourceMappingURL=2.index.js.map

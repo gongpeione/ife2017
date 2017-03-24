@@ -2412,6 +2412,10 @@ globule@^1.0.0:
     lodash "~4.16.4"
     minimatch "~3.0.2"
 
+gmd-markdown-parser:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/gmd-markdown-parser/-/gmd-markdown-parser-0.0.2.tgz#17fef2fa5a4f7d8e1db50ec6903ad6a9a1977c10"
+
 graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"

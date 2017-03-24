@@ -65,7 +65,7 @@
             {
                 "title": "CSS3实现3D 轮播图",
                 "name": "slider",
-                "completed": false,
+                "completed": true,
                 "github": "https://github.com/gongpeione/ife2017/tree/master/src/nuomi/slider"
             },
             {
